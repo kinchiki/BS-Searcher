@@ -1,0 +1,38 @@
+{ 企業名, 開催日時, 開催地, 業種, URL, サイト, （タイトル）, （本社）, （地図）, （住所） }
+{int, varchar, varchar, varchar, varchar}
+{ id, name, date, place, business, url, site }
+
+サイトをテーブルにするか属性にするか
+
+
+クローラー作成＆スクレイピングで各種情報抽出
+→就職情報サイトから説明会のデータを取る
+→企業名、説明会タイトル、URL、開催日時、開催地
+→cronでデータ登録
+
+データベースに保存
+→テーブルは複数？ 情報サイトと企業のテーブル作る？
+→サイト毎にテーブル分けるか分けないか
+→site or matome, company, etc.
+
+RailsでWebアプリ作成
+→就活サイトの検索ページをベースに作成
+→検索したらデータベースから引っ張ってくる
+→時系列順に表示 同じ会社は複数のサイトをまとめる
+
+
+job.rikunabi.com/2017/
+├── company/
+│   ├── seminar/
+│   │   └── rxxxxxxxxx/
+│   │       ├── C001（目的）
+│   │       └── C002（複数地開催）
+│   ├── seminars/
+│   │   └── rxxxxxxxxx（複数地開催の一覧ページ）
+│   └── top/
+│       └── rxxxxxxxxx（企業トップ）
+├── search/
+│   └── seminar/
+│       └── result/（検索結果ページ）
+│           └── パラメーター
+└── othrer

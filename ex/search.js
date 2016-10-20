@@ -1,0 +1,1 @@
+javascript:(function(a){a.forEach(v=>console.log(v.href.replace(/[ \r\n]+$/gim,"")+","+v.text.replace(/[ \r\n]+$/gim,"")));})(document.querySelectorAll('li.search-cassette>div>div>div>a'));
