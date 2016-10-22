@@ -1,8 +1,42 @@
-{ 企業名, 開催日時, 開催地, 業種, URL, サイト, （タイトル）, （本社）, （地図）, （住所） }
-{int, varchar, varchar, varchar, varchar}
-{ id, name, date, place, business, url, site }
+{ 企業名, 開催日時, 開催地, 業種, 開始時刻, 終了時刻 （URL）, （サイトid）, （タイトル）, （本社）, （地図）, （住所） }
+
+説明会テーブル
+id, 企業名, 開催日, 開催地, （メイン業種, サブ業種,） 開始時刻, 終了時刻, url_id
+
+URLテーブル
+id, url, 企業_id, サイト_id
+
+サイトテーブル
+id, サイト名
+
+業種テーブル?
+id, 業種,
+
+
+table サイト (id,サイト名,url)
+table 中間 (サイトid, サイト入れるid)
 
 サイトをテーブルにするか属性にするか
+サイトをテーブルにした方が良い気がする
+サイト毎の方が検索で省きやすそう
+
+
+job.rikunabi.com/2017/
+├── company/
+│   ├── seminar/
+│   │   └── rxxxxxxxxx/
+│   │       ├── C001（目的）
+│   │       └── C002（複数地開催）
+│   ├── seminars/
+│   │   └── rxxxxxxxxx（複数地開催の一覧ページ）
+｜   ｜           なかったらC001にリダイレクトされる
+│   └── top/
+│       └── rxxxxxxxxx（企業トップ）
+├── search/
+│   └── seminar/
+│       └── result/（検索結果ページ）
+│           └── パラメーター
+└── othrer
 
 
 クローラー作成＆スクレイピングで各種情報抽出
@@ -19,20 +53,3 @@ RailsでWebアプリ作成
 →就活サイトの検索ページをベースに作成
 →検索したらデータベースから引っ張ってくる
 →時系列順に表示 同じ会社は複数のサイトをまとめる
-
-
-job.rikunabi.com/2017/
-├── company/
-│   ├── seminar/
-│   │   └── rxxxxxxxxx/
-│   │       ├── C001（目的）
-│   │       └── C002（複数地開催）
-│   ├── seminars/
-│   │   └── rxxxxxxxxx（複数地開催の一覧ページ）
-│   └── top/
-│       └── rxxxxxxxxx（企業トップ）
-├── search/
-│   └── seminar/
-│       └── result/（検索結果ページ）
-│           └── パラメーター
-└── othrer
