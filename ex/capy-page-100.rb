@@ -4,9 +4,6 @@ require 'capybara/dsl'
 require 'selenium-webdriver'
 require 'capybara/poltergeist'
 
-#Selenium::WebDriver = "/Applications/Firefox.app/Contents/MacOS/Firefix"
-#driver = Selenium::WebDriver.for :"/Applications/Firefox.app/Contents/MacOS/Firefix", marionette: true
-
 Capybara.configure do |config|
   config.run_server = false
   config.current_driver = :selenium#:poltergeist
