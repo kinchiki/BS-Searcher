@@ -1,4 +1,5 @@
 class URL
+  attr_accessor :id, :url, :bf_id, :site_id
   @@number = 1
 
   def initialize(n,m)

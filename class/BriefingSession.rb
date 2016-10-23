@@ -1,4 +1,5 @@
 class BriefingSession
+  attr_accessor :id, :company_id, :date, :start_time, :finish_time, :location
   @@number = 1
 
   def initialize(n,m)

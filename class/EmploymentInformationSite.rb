@@ -1,4 +1,5 @@
 class EmploymentInformationSite
+  attr_accessor :id, :site_name
   @@number = 1
 
   def initialize
