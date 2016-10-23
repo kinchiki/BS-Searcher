@@ -10,4 +10,8 @@ class URL
     @@number += 1
   end
 
+  def show_data
+    puts "#{@id},#{@url},#{@bf_id},#{@site_id}"
+  end
+
 end

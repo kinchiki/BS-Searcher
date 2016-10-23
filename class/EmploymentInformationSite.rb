@@ -8,4 +8,8 @@ class EmploymentInformationSite
     @@number += 1
   end
 
+  def show_data
+    puts "#{@id},#{@site_name}"
+  end
+
 end
