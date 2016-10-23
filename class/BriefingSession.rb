@@ -3,17 +3,16 @@ class BriefingSession
 
   def initialize(n,m)
     @id = @@number # 説明会id
-    @url_id = n # URLテーブルの説明会idから探されるid
     @company_id = m # Company#id
-    #@company_name = "" # 企業名
-    #@main_type = "" # メイン業種
-    #@sub_type = "" # サブ業種
     @date = [] # 開催日
     @start_time = [] # 開始時間
     @finish_time = [] # 終了時間
-    @deadline = [] # 締切
+    #@deadline = [] # 受付締切
     @location = [] # 開催地
     @@number += 1
+    #@company_name = "" # 企業名
+    #@main_type = "" # メイン業種
+    #@sub_type = "" # サブ業種
   end
 
   def show_company

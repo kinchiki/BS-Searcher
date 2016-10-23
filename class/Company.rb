@@ -3,7 +3,7 @@ class Company
 
   def initialize(n)
     @id = @@number # 企業id
-    @company_name = "" # 企業名
+    @name = "" # 企業名
     @main_type = "" # メイン業種
     @sub_type = "" # サブ業種
     @employees_number = n # 従業員数
