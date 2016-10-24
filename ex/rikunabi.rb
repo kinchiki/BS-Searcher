@@ -3,21 +3,23 @@ require 'anemone'
 require 'nokogiri'
 require 'kconv'
 
-# urls = [
-#  "https://job.rikunabi.com/2017/company/seminar/",
-#  "https://job.rikunabi.com/2017/search/seminar/result/?dd=20161014&k=21&k=22&k=23&k=24"
-# ]
+urls = [
+  "https://job.rikunabi.com/2017/company/seminars/r716010091/",
+  "https://job.rikunabi.com/2017/company/seminars/r970600081/",
+  "https://job.rikunabi.com/2017/company/seminars/r285500049/",
+  "https://job.rikunabi.com/2017/company/seminars/r248500020/",
+  "https://job.rikunabi.com/2017/company/seminars/r586591050/",
+  "https://job.rikunabi.com/2017/company/seminars/r158800081/",
+  "https://job.rikunabi.com/2017/company/seminars/r429300045/",
+  "https://job.rikunabi.com/2017/company/seminars/r360900064/",
+  "https://job.rikunabi.com/2017/company/seminars/r324700026/",
+]
 
-#%r(/company/top/r\d{9}+/)
-
-url = "https://job.rikunabi.com/2017/search/seminar/result/"
-#https://job.rikunabi.com/2017/search/seminar/result/?ms=1&moduleCd=2&isc=ps055&pn=3
-#https://job.rikunabi.com/2017/search/seminar/result/?ms=1&isc=ps055&pn=2
 opts = {
-  depth_limit: 10,
+  depth_limit: 2,
   skip_query_strings: false,
   obey_robots_txt: true,
-  read_timeout: 10
+  read_timeout: 5
 }
 
 Anemone.crawl(url, opts) do |anemone|

@@ -1,59 +1,58 @@
 require 'bundler/setup'
-require 'open-uri'
+require 'anemone'
 require 'nokogiri'
-require './class/Company.rb'
+require 'kconv'
 
-def scraping(cp,doc)
-  cp.name = doc.xpath("//h1[@class='company-title-main']").text
-  # p c.name
-
-  #メイン業種のリストを予め作っておき、そっからマッチしたものを取り出すとか
-  #classを書き換えて抽出する？
-  cp.main_type = doc.xpath("//td[@class='company-information-detail']").first.text
-  # p c.main_type
-
-  cp.sub_type = doc.xpath("//span[@class='u-db u-fs14']").text
-  # p c.sub_type
-
-  tmp = doc.xpath("//th[@class='company-data-th']")
-  e_index = 0
-  tmp.each_with_index { |node, i|
-    if node.text == "従業員数"
-      e_index = i
-      break
-    end
-  }
-
-  cp.employees_number = doc.xpath("//td[@class='company-data-td']")[e_index].text.sub(/名.+/,"").sub(/[^\d]+/, "").delete(",").to_i
-  #c.employees_number = doc.xpath("/html/body/div[1]/div[2]/div/div[8]/table/tbody/tr[4]/td")
-  # p c.employees_number
-
-  cp.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
-  # p c.head_office
-
-end
-
-
-#url = 'https://job.rikunabi.com/2017/company/top/r484700037/'
 urls = [
-  'https://job.rikunabi.com/2017/company/top/r484700037/',
-  'https://job.rikunabi.com/2017/company/top/r716010091/',
-  'https://job.rikunabi.com/2017/company/top/r970600081/',
-  'https://job.rikunabi.com/2017/company/top/r285500049/',
+  "https://job.rikunabi.com/2017/company/seminars/r716010091/",
+  "https://job.rikunabi.com/2017/company/seminars/r970600081/",
+  "https://job.rikunabi.com/2017/company/seminars/r285500049/",
+  "https://job.rikunabi.com/2017/company/seminars/r248500020/",
+  "https://job.rikunabi.com/2017/company/seminars/r586591050/",
+  "https://job.rikunabi.com/2017/company/seminars/r158800081/",
+  "https://job.rikunabi.com/2017/company/seminars/r429300045/",
+  "https://job.rikunabi.com/2017/company/seminars/r360900064/",
+  "https://job.rikunabi.com/2017/company/seminars/r324700026/",
 ]
 
-companies = []
-urls.each do |url|
-  doc = Nokogiri::HTML.parse(open(url))
-  company = Company.new
-  scraping(company,doc)
-  companies << company
+opts = {
+  depth_limit: 2,
+  skip_query_strings: false,
+  obey_robots_txt: true,
+  read_timeout: 5
+}
+
+Anemone.crawl(urls, opts) do |anemone|
+  pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
+
+  #pat = Regexp.compile(s+n.to_s)
+  #p pat
+  anemone.focus_crawl do |page|
+    print "forcus : "
+    puts page.url
+    page.links.keep_if { |link|
+      link.to_s.match(pat)
+    }
+  end
+
+  anemone.on_every_page do |page|
+    #p page.doc.xpath("/html/body/div[1]/div[3]/div/ul/li[5]/div[1]/div[2]/div[1]/a").attribute('href').text
+    print "every : "
+    puts page.url
+   end
+
 end
 
-companies.each do |cp|
-  cp.show_data
-  puts
-end
+
+  #PATTERN = %r(.+/company/seminar/r\d{9}+/)
+  #PATTERN = %r(.+/company/seminars/r\d{9}+/)
+  #PATTERN = %r(.+/company/top/r\d{9}+/)
+  #str = "/https:\/\/job.rikunabi.com\/2017\/search\/seminar\/result\/\?ms=1&isc=ps055&pn=#{num}/"
+  #PATTERN = str
+  #PATTERN = %r(https://job.rikunabi.com/2017/search/seminar/result/\?ms=1&isc=ps055&pn=\d{1,40})
+
+  # s = "https://job.rikunabi.com/2017/search/seminar/result/\?ms=1&isc=ps055&pn="
+  # n = 2
 
 
 
