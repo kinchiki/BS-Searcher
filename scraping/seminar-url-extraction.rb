@@ -1,9 +1,8 @@
 require 'bundler/setup'
 require 'open-uri'
 require 'nokogiri'
-require 'kconv'
 
-1.upto(40) do |n|
+1.upto(3) do |n|
   url = "https://job.rikunabi.com/2017/search/seminar/result/?pn=" + n.to_s
   doc = Nokogiri::HTML(open(url))
 
@@ -13,4 +12,5 @@ require 'kconv'
   nodesets.each do |node|
     puts node[:href]
   end
+  sleep 1
 end

@@ -1,22 +1,17 @@
 require 'bundler/setup'
 require 'anemone'
 require 'nokogiri'
-require 'kconv'
 
 urls = [
-  "https://job.rikunabi.com/2017/company/seminars/r716010091/",
-  "https://job.rikunabi.com/2017/company/seminars/r970600081/",
-  "https://job.rikunabi.com/2017/company/seminars/r285500049/",
-  "https://job.rikunabi.com/2017/company/seminars/r248500020/",
-  "https://job.rikunabi.com/2017/company/seminars/r586591050/",
-  "https://job.rikunabi.com/2017/company/seminars/r158800081/",
-  "https://job.rikunabi.com/2017/company/seminars/r429300045/",
+  "https://job.rikunabi.com/2017/company/seminars/r483800020/",
+  "https://job.rikunabi.com/2017/company/seminars/r591800074/",
+  "https://job.rikunabi.com/2017/company/seminars/r531320090/",
+  "https://job.rikunabi.com/2017/company/seminars/r578300040/",
   "https://job.rikunabi.com/2017/company/seminars/r360900064/",
-  "https://job.rikunabi.com/2017/company/seminars/r324700026/",
 ]
 
 opts = {
-  depth_limit: 2,
+  depth_limit: 1,
   skip_query_strings: false,
   obey_robots_txt: true,
   read_timeout: 5
@@ -28,16 +23,12 @@ Anemone.crawl(urls, opts) do |anemone|
   #pat = Regexp.compile(s+n.to_s)
   #p pat
   anemone.focus_crawl do |page|
-    print "forcus : "
-    puts page.url
     page.links.keep_if { |link|
       link.to_s.match(pat)
     }
   end
 
   anemone.on_every_page do |page|
-    #p page.doc.xpath("/html/body/div[1]/div[3]/div/ul/li[5]/div[1]/div[2]/div[1]/a").attribute('href').text
-    print "every : "
     puts page.url
    end
 
