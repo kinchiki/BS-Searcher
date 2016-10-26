@@ -1,9 +1,9 @@
 require 'bundler/setup'
 require 'anemone'
 require 'nokogiri'
-require_relative 'class/BriefingSession.rb'
+require_relative '../class/BriefingSession.rb'
 
-def bfs_scraping(doc, bf_sessions)
+def bfs_scrape(doc, bf_sessions)
   times = doc.xpath("//th[@class='gh_evt_col02_02']")
   locations = doc.xpath("//th[@class='gh_evt_col03 g_txt_C']")
   deadline = doc.xpath("//th[@class='gh_evt_col05 g_txt_C']")
@@ -14,14 +14,11 @@ def bfs_scraping(doc, bf_sessions)
 
     bs = BriefingSession.new
     bs.location = locations[i].text
-    bs.date = time[i].text[0..9]
+    bs.date = times[i].text[0..9]
 
-    st = time[i].text[14..18]#.sub("：", ":")
-    st[2] = ':'
-    bs.start_time = st
-    ft = time[i].text[-5..-1]
-    ft[2] = ':'
-    bs.finish_time = ft
+    time = times[i].text[14..-1].tr('：',':')
+    bs.start_time  = time[0..4]
+    bs.finish_time = time[-5..-1]
 
     bf_sessions << bs
   end
@@ -52,7 +49,7 @@ Anemone.crawl(urls, opts) do |anemone|
   end
 
   anemone.on_every_page do |page|
-    bfs_scraping(page.doc, bf_sessions) if page.url.to_s =~ pat
+    bfs_scrape(page.doc, bf_sessions) if page.url.to_s =~ pat
    end
 
 end
