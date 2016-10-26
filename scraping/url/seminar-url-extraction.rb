@@ -2,12 +2,10 @@ require 'bundler/setup'
 require 'open-uri'
 require 'nokogiri'
 
-1.upto(3) do |n|
-  url = "https://job.rikunabi.com/2017/search/seminar/result/?pn=" + n.to_s
+1.upto(38) do |n|
+  url = "https://job.rikunabi.com/2017/search/seminar/result/?pn=#{n.to_s}"
   doc = Nokogiri::HTML(open(url))
-
   nodesets = doc.xpath("//div[@class='search-cassette-title']/a")
-  #puts nodesets
 
   nodesets.each do |node|
     puts node[:href]

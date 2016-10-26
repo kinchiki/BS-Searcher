@@ -12,8 +12,10 @@ require_relative '../class/BriefingSession.rb'
 # }
 
 urls = [
-  'https://job.rikunabi.com/2017/company/top/r732800083/',
-  'https://job.rikunabi.com/2017/company/top/r334620050/',
+  'https://job.rikunabi.com/2017/company/top/r158800081/',
+  # 'https://job.rikunabi.com/2017/company/top/r697430013/',
+  # 'https://job.rikunabi.com/2017/company/top/r732800083/',
+  # 'https://job.rikunabi.com/2017/company/top/r334620050/',
 ]
 
 def bfs_scrape(doc, bf_sessions, cp_id)
@@ -95,5 +97,10 @@ companies.each do |cp|
   cp.show_data
 end
 
+puts
+
 puts 'id,c_id,date,strat_time,finish_time,location'
-bf_sessions.each { |e| e.show_data }
+bf_sessions.each do |e|
+  # companies[e.company_id].show_data
+  e.show_data
+end

@@ -2,7 +2,7 @@ class Company
   attr_accessor :id, :name, :main_type, :sub_type, :employees_number, :head_office
   @@number = 1
 
-  def initialize(n=1234)
+  def initialize(n=10)
     @id = @@number # 企業id
     @sub_type_id = n # 副業種id
     @name = "" # 企業名
