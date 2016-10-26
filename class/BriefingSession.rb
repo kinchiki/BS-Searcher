@@ -9,7 +9,6 @@ class BriefingSession
     @location = "" # 開催地
     @start_time = "" # 開始時間
     @finish_time = "" # 終了時間
-    #@deadline = "" # 受付締切
     @@number += 1
   end
 

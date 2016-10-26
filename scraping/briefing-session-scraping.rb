@@ -9,6 +9,7 @@ def bfs_scrape(doc, bf_sessions)
   deadline = doc.xpath("//th[@class='gh_evt_col05 g_txt_C']")
 
   (times.size).times do |i|
+    # エラーが発生する説明会があったら正規表現でやればいい
     next if deadline[i].text == "受付終了"
     next if deadline[i].text == "－"
 
