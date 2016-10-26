@@ -3,8 +3,7 @@ require 'open-uri'
 require 'nokogiri'
 
 # 1.upto(2) do |n|
-  #url = "https://job.rikunabi.com/2017/search/seminar/result/?pn=1"# + n.to_s
-# ms=1&isc=ps055& いらん
+  #url = "https://job.rikunabi.com/2017/search/seminar/result/?pn=#{n.to_s}""
 
   url = 'https://job.rikunabi.com/2017/search/seminar/result/?isc=ps136&b=89&b=90&b=91&b=92&k=21&k=22&k=23&k=24'
 

@@ -4,7 +4,7 @@ class SubIndustryType
 
   def initialize
     @id = @@number # 副業種id
-    @main_type_id = "" # メイン業種id
+    @main_type_id = 0 # メイン業種id
     @type = "" # 副業種
     @@number += 1
   end
