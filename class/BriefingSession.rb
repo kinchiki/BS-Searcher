@@ -16,5 +16,4 @@ class BriefingSession
   def show_data
     puts "#{@id},#{@company_id},#{@date},#{@start_time},#{@finish_time},#{@location}"
   end
-
 end

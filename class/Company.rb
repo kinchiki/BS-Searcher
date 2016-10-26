@@ -8,12 +8,11 @@ class Company
     @main_type = "" # メイン業種
     @sub_type = "" # サブ業種
     @head_office = "" # 本社所在地
-    @employees_number = 0 # 従業員数
+    @employees_number = 1 # 従業員数
     @@number += 1
   end
 
   def show_data
     puts "#{@id},#{@name},#{@main_type},#{@sub_type},#{@head_office},#{@employees_number}"
   end
-
 end

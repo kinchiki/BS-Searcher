@@ -11,5 +11,4 @@ class EmploymentInformationSite
   def show_data
     puts "#{@id},#{@site_name}"
   end
-
 end

@@ -3,13 +3,15 @@ require 'open-uri'
 require 'nokogiri'
 require_relative '../class/Company.rb'
 
-def scraping(cp,doc)
-  cp.name = doc.xpath("//h1[@class='company-title-main']").text
+def cp_scrape(doc)
+  company = Company.new
   #メイン業種のリストを予め作っておき、そっからマッチしたものを取り出すとか
-  #classを書き換えて抽出する？
-  cp.main_type = doc.xpath("//td[@class='company-information-detail']").first.text
-  cp.sub_type = doc.xpath("//span[@class='u-db u-fs14']").text
-  cp.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
+  #cssのclassを書き換えて抽出する？
+
+  company.name = doc.xpath("//h1[@class='company-title-main']").text
+  company.main_type = doc.xpath("//td[@class='company-information-detail']").first.text
+  company.sub_type = doc.xpath("//span[@class='u-db u-fs14']").text
+  company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
 
   tmp = doc.xpath("//th[@class='company-data-th']")
   e_index = 0
@@ -19,26 +21,25 @@ def scraping(cp,doc)
       break
     end
   }
-  cp.employees_number = doc.xpath("//td[@class='company-data-td']")[e_index].text.sub(/名.+/,"").sub(/[^\d]+/, "").delete(",").to_i
+  company.employees_number = doc.xpath("//td[@class='company-data-td']")[e_index].text.sub(/名.+/,"").sub(/[^\d]+/, "").delete(",").to_i
+
+  company
 end
 
 
 urls = [
-  'https://job.rikunabi.com/2017/company/top/r484700037/',
-  'https://job.rikunabi.com/2017/company/top/r716010091/',
-  'https://job.rikunabi.com/2017/company/top/r970600081/',
-  'https://job.rikunabi.com/2017/company/top/r285500049/',
+'https://job.rikunabi.com/2017/company/top/r732800083/',
+'https://job.rikunabi.com/2017/company/top/r334620050/',
+'https://job.rikunabi.com/2017/company/top/r322960025/',
+'https://job.rikunabi.com/2017/company/top/r621800079/',
 ]
 
 companies = []
 urls.each do |url|
-  doc = Nokogiri::HTML.parse(open(url))
-  company = Company.new
-  scraping(company,doc)
-  companies << company
+  companies << cp_scrape(Nokogiri::HTML.parse(open(url)))
 end
 
+puts 'ID,企業名,主業種,副業種,本社所在地,従業員数'
 companies.each do |cp|
   cp.show_data
-  puts
 end
