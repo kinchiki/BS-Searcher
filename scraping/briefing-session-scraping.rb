@@ -10,6 +10,7 @@ def bfs_scrape(doc, bf_sessions)
 
   (times.size).times do |i|
     # エラーが発生する説明会があったら正規表現でやればいい
+    # または例外処理
     next if deadline[i].text == "受付終了"
     next if deadline[i].text == "－"
 
@@ -23,7 +24,6 @@ def bfs_scrape(doc, bf_sessions)
 
     bf_sessions << bs
   end
-
 end
 
 urls = [
