@@ -27,7 +27,7 @@ def bfs_scrape(doc, bf_sessions)
 end
 
 urls = [
-  "https://job.rikunabi.com/2017/company/seminars/r483800020/",
+  "https://job.rikunabi.com/2017/company/seminars/r970600081/",
   # "https://job.rikunabi.com/2017/company/seminars/r591800074/",
   # "https://job.rikunabi.com/2017/company/seminars/r531320090/",
   # "https://job.rikunabi.com/2017/company/seminars/r578300040/",
