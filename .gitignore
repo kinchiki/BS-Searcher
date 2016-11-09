@@ -47,3 +47,4 @@ bower.json
 # MyFile
 /book
 /data/site_structure
+/config/database.yml
