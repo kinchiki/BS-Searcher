@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116204128) do
+ActiveRecord::Schema.define(version: 20161116205300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,13 +58,17 @@ ActiveRecord::Schema.define(version: 20161116204128) do
 
   create_table "urls", force: :cascade do |t|
     t.integer  "briefing_session_id"
-    t.string   "url_v",               limit: 255, null: false
+    t.string   "url_val",             limit: 500, null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "site_id"
   end
+
+  add_index "urls", ["site_id"], name: "index_urls_on_site_id", using: :btree
 
   add_foreign_key "briefing_sessions", "companies"
   add_foreign_key "companies", "sub_industries"
   add_foreign_key "sub_industries", "main_industries"
   add_foreign_key "urls", "briefing_sessions"
+  add_foreign_key "urls", "sites"
 end
