@@ -45,7 +45,5 @@ bower.json
 .byebug_history
 
 # MyFile
-/book
-/data/site_structure
 /config/database.yml
-/thinking
+/my_file/thinking
