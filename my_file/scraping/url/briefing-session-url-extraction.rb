@@ -1,7 +1,7 @@
 require 'bundler/setup'
 require 'open-uri'
 require 'nokogiri'
-
+# このプログラムはいらん
 # 1.upto(2) do |n|
   #url = "https://job.rikunabi.com/2017/search/seminar/result/?pn=#{n.to_s}""
 
