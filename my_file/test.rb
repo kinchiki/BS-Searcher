@@ -22,10 +22,16 @@ end
 
 
 urls = [
-  'https://job.rikunabi.com/2017/company/top/r732800083/',
+  'https://job.rikunabi.com/2017/company/top/r149681093/',
+  'https://job.rikunabi.com/2017/company/top/r607081087/',
+  'https://job.rikunabi.com/2017/company/top/r716800050/',
+  'https://job.rikunabi.com/2017/company/top/r202700097/',
   'https://job.rikunabi.com/2017/company/top/r334620050/',
-  'https://job.rikunabi.com/2017/company/top/r322960025/',
-  'https://job.rikunabi.com/2017/company/top/r621800079/',
+  'https://job.rikunabi.com/2017/company/top/r414820057/',
+  'https://job.rikunabi.com/2017/company/top/r531320090/',
+  'https://job.rikunabi.com/2017/company/top/r139611099/',
+  'https://job.rikunabi.com/2017/company/top/r687010049/',
+  'https://job.rikunabi.com/2017/company/top/r483800020/',
 ]
 
 companies = []
