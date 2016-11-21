@@ -1,18 +1,18 @@
 class Company
-  attr_accessor :id, :name, :main_type, :sub_type, :employees_number, :head_office
+  attr_accessor :name, :employees_number, :head_office, :sub_str #:id, :sub_industry_id,
   @@number = 1
 
   def initialize(n=10)
-    @id = @@number # 企業id
+    #@id = @@number # 企業id
     @sub_industry_id = n # 副業種id
     @name = "" # 企業名
     @head_office = "" # 本社所在地
     @employees_number = 1 # 従業員数
-    # @main_type = "" # 主業種
-    @@number += 1
+    @sub_str = ""
+    #@@number += 1
   end
 
   def show_data
-    puts "#{@id},#{@name},#{@head_office},#{@employees_number}"
+    puts "#{@name}, #{@head_office}, #{@employees_number}, #{@sub_str}"
   end
 end
