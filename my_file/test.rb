@@ -3,7 +3,7 @@ require 'open-uri'
 def cp_scrape(doc)
   company = Company.new
 
-  company.com_name = doc.xpath("//h1[@class='company-title-main']").text.tr("株式会社","")
+  company.com_name = doc.xpath("//h1[@class='company-title-main']").text.tr("株式会社","").gsub(/(\s|　)+/,'')
   company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
   company.sub_str = doc.xpath("//td[@class='company-information-detail']")[0].children[1].text
 
@@ -40,5 +40,6 @@ urls.each do |url|
 end
 
 companies.each do |com|
+  com.save
   p com
 end

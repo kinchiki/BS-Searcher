@@ -5,7 +5,7 @@ require_relative '../class/Company.rb'
 
 def cp_scrape(doc)
   company = Company.new
-  company.name = doc.xpath("//h1[@class='company-title-main']").text.tr("株式会社","")
+  company.name = doc.xpath("//h1[@class='company-title-main']").text.tr("株式会社","").gsub(/(\s|　)+/,'')
   company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
 
   # type = doc.xpath("//td[@class='company-information-detail']")[0].children
