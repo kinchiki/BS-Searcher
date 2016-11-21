@@ -1,8 +1,3 @@
-require 'bundler/setup'
-require 'anemone'
-require 'nokogiri'
-require_relative '../class/BriefingSession.rb'
-
 def bfs_scrape(doc, bf_sessions)
   times = doc.xpath("//th[@class='gh_evt_col02_02']")
   locations = doc.xpath("//th[@class='gh_evt_col03 g_txt_C']")
@@ -28,10 +23,6 @@ end
 
 urls = [
   "https://job.rikunabi.com/2017/company/seminars/r970600081/",
-  # "https://job.rikunabi.com/2017/company/seminars/r591800074/",
-  # "https://job.rikunabi.com/2017/company/seminars/r531320090/",
-  # "https://job.rikunabi.com/2017/company/seminars/r578300040/",
-  # "https://job.rikunabi.com/2017/company/seminars/r360900064/",
 ]
 
 opts = {
@@ -42,8 +33,8 @@ opts = {
 }
 
 bf_sessions = []
+urldb = []
 pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
-
 Anemone.crawl(urls, opts) do |anemone|
 
   anemone.focus_crawl do |page|
@@ -51,10 +42,12 @@ Anemone.crawl(urls, opts) do |anemone|
   end
 
   anemone.on_every_page do |page|
-    bfs_scrape(page.doc, bf_sessions) if page.url.to_s =~ pat
+    doc = page.doc
+    com_name = doc.xpath("//div[@class='dev-company-title-main']")
+    bfs_scrape(doc, bf_sessions) if page.url.to_s =~ pat
+    urldb << URL.new(page.url)
    end
 
 end
 
-puts 'id,c_id,bs_date,strat_time,finish_time,location'
-bf_sessions.each { |e| e.show_data }
+# bf_sessions.each { |b| p b }

@@ -22,7 +22,7 @@ def bfs_scrape(doc, bf_sessions)
 end
 
 urls = [
-  "https://job.rikunabi.com/2017/company/seminars/r970600081/",
+  "https://job.rikunabi.com/2017/company/seminars/r639530023/",
 ]
 
 opts = {
@@ -33,17 +33,22 @@ opts = {
 }
 
 bf_sessions = []
+urldb = []
+pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
 Anemone.crawl(urls, opts) do |anemone|
-  pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
 
   anemone.focus_crawl do |page|
     page.links.keep_if { |link| link.to_s.match(pat) }
   end
 
   anemone.on_every_page do |page|
-    bfs_scrape(page.doc, bf_sessions) if page.url.to_s =~ pat
+    doc = page.doc
+    p c_name = doc.xpath("//div[@class='dev-company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
+    p company_id = Company.find_by_com_name(c_name).id
+    bfs_scrape(doc, bf_sessions) if page.url.to_s =~ pat
+    urldb << URL.new(page.url)
    end
 
 end
 
-bf_sessions.each { |b| p b }
+# bf_sessions.each { |b| p b }
