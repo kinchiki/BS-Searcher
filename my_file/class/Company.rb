@@ -13,6 +13,6 @@ class Company
   end
 
   def show_data
-    puts "#{@id},#{@name},#{@sub_industry_id},#{@head_office},#{@employees_number}"
+    puts "#{@id},#{@name},#{@head_office},#{@employees_number}"
   end
 end
