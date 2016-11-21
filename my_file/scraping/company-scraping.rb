@@ -5,13 +5,12 @@ require_relative '../class/Company.rb'
 
 def cp_scrape(doc)
   company = Company.new
-  #メイン業種のリストを予め作っておき、そっからマッチしたものを取り出すとか
-  #cssのclassを書き換えて抽出する？
-
-  company.name = doc.xpath("//h1[@class='company-title-main']").text
-  #company.main_type = doc.xpath("//td[@class='company-information-detail']").first.text
-  #company.sub_type = doc.xpath("//span[@class='u-db u-fs14']").text
+  company.name = doc.xpath("//h1[@class='company-title-main']").text.tr("株式会社","")
   company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
+
+  # type = doc.xpath("//td[@class='company-information-detail']")[0].children
+  # main_type = type[0].text
+  # sub_type = type[1].text
 
   tmp = doc.xpath("//th[@class='company-data-th']")
   e_index = 0
@@ -21,17 +20,23 @@ def cp_scrape(doc)
       break
     end
   }
-  company.employees_number = doc.xpath("//td[@class='company-data-td']")[e_index].text.sub(/名.+/,"").sub(/[^\d]+/, "").delete(",").to_i
+  company.employees_number = doc.xpath("//td[@class='company-data-td']")[e_index].text.tr("０-９", "0-9").sub(/名.+/,"").sub(/[^\d]+/, "").delete(",").to_i
 
   company
 end
 
 
 urls = [
-  'https://job.rikunabi.com/2017/company/top/r732800083/',
-  'https://job.rikunabi.com/2017/company/top/r334620050/',
-  'https://job.rikunabi.com/2017/company/top/r322960025/',
-  'https://job.rikunabi.com/2017/company/top/r621800079/',
+'https://job.rikunabi.com/2017/company/top/r531320090/',
+'https://job.rikunabi.com/2017/company/top/r149681093/',
+'https://job.rikunabi.com/2017/company/top/r451581003/',
+'https://job.rikunabi.com/2017/company/top/r340420058/',
+'https://job.rikunabi.com/2017/company/top/r202700097/',
+'https://job.rikunabi.com/2017/company/top/r414820057/',
+'https://job.rikunabi.com/2017/company/top/r394130001/',
+'https://job.rikunabi.com/2017/company/top/r716800050/',
+'https://job.rikunabi.com/2017/company/top/r586591050/',
+'https://job.rikunabi.com/2017/company/top/r483800020/',
 ]
 
 companies = []

@@ -8,7 +8,7 @@ require 'nokogiri'
   nodesets = doc.xpath("//div[@class='search-cassette-title']/a")
 
   nodesets.each do |node|
-    puts node[:href]
+    puts "'https://job.rikunabi.com#{node[:href]}',"
   end
   sleep 0.5
 end

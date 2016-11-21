@@ -4,7 +4,7 @@ class Company
 
   def initialize(n=10)
     @id = @@number # 企業id
-    @sub_type_id = n # 副業種id
+    @sub_industry_id = n # 副業種id
     @name = "" # 企業名
     @head_office = "" # 本社所在地
     @employees_number = 1 # 従業員数
@@ -13,6 +13,6 @@ class Company
   end
 
   def show_data
-    puts "#{@id},#{@name},#{@sub_type_id},#{@head_office},#{@employees_number}"
+    puts "#{@id},#{@name},#{@sub_industry_id},#{@head_office},#{@employees_number}"
   end
 end
