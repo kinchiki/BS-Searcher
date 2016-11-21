@@ -1,40 +1,49 @@
-require 'open-uri'
+def bfs_scrape(doc, bf_sessions)
+  times = doc.xpath("//th[@class='gh_evt_col02_02']")
+  locations = doc.xpath("//th[@class='gh_evt_col03 g_txt_C']")
+  deadline = doc.xpath("//th[@class='gh_evt_col05 g_txt_C']")
 
-def cp_scrape(doc)
-  company = Company.new
+  (times.size).times do |i|
+    # エラーが発生する説明会があったら正規表現でやればいい
+    # または例外処理
+    next if deadline[i].text == "受付終了"
+    next if deadline[i].text == "－"
 
-  company.com_name = doc.xpath("//h1[@class='company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
-  company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
-  company.sub_str = doc.xpath("//td[@class='company-information-detail']")[0].children[1].text
+    bs = BriefingSession.new
+    bs.location = locations[i].text
+    bs.bs_date = times[i].text[0..9]
 
-  tmp = doc.xpath("//th[@class='company-data-th']")
-  e_index = 0
-  tmp.each_with_index { |node, i|
-    # if node.text =~ /●?従業員数|社員数/
-    if node.text == ("従業員数"||"社員数")
-      e_index = i
-      break
-    end
-  }
-  if e_index == 0
-    company.employees_number = 0
-  else
-    company.employees_number = doc.xpath("//td[@class='company-data-td']")[e_index].text.sub(/(名|人).+/,"").tr("０-９", "0-9").sub(/[^\d]+/, "").delete(",").to_i
+    time = times[i].text[14..-1].tr('：',':')
+    bs.start_time  = time[0..4]
+    bs.finish_time = time[-5..-1]
+
+    bf_sessions << bs
   end
-
-  company
 end
-
 
 urls = [
+  "https://job.rikunabi.com/2017/company/seminars/r970600081/",
 ]
 
-companies = []
-urls.each do |url|
-  companies << cp_scrape(Nokogiri::HTML.parse(open(url)))
-  sleep 1
+opts = {
+  depth_limit: 1,
+  skip_query_strings: false,
+  obey_robots_txt: true,
+  read_timeout: 5
+}
+
+bf_sessions = []
+Anemone.crawl(urls, opts) do |anemone|
+  pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
+
+  anemone.focus_crawl do |page|
+    page.links.keep_if { |link| link.to_s.match(pat) }
+  end
+
+  anemone.on_every_page do |page|
+    bfs_scrape(page.doc, bf_sessions) if page.url.to_s =~ pat
+   end
+
 end
 
-companies.each do |com|
-  com.save
-end
+bf_sessions.each { |b| p b }
