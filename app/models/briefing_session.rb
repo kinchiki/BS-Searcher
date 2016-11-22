@@ -1,6 +1,6 @@
 class BriefingSession < ActiveRecord::Base
   belongs_to :company
-  has_many :url
+  has_many :urls, :dependent => :destroy
 
   validates :company_id, presence: true, numericality: { only_integer: true }
   validates :location, presence: true, length: { in: 2..20 }
