@@ -13,6 +13,7 @@ def bfs_scrape(doc, bf_sessions)
     # または例外処理
     next if deadline[i].text == "受付終了"
     next if deadline[i].text == "－"
+    next unless times[i].text.size == 25
 
     bs = BriefingSession.new
     bs.location = locations[i].text
@@ -27,11 +28,7 @@ def bfs_scrape(doc, bf_sessions)
 end
 
 urls = [
-  "https://job.rikunabi.com/2017/company/seminars/r970600081/",
-  # "https://job.rikunabi.com/2017/company/seminars/r591800074/",
-  # "https://job.rikunabi.com/2017/company/seminars/r531320090/",
-  # "https://job.rikunabi.com/2017/company/seminars/r578300040/",
-  # "https://job.rikunabi.com/2017/company/seminars/r360900064/",
+  'https://job.rikunabi.com/2017/company/seminars/r340420058/',
 ]
 
 opts = {

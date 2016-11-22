@@ -1,4 +1,4 @@
-def bfs_scrape(doc, bf_sessions)
+def bfs_scrape(doc, bf_sessions, c_id)
   times = doc.xpath("//th[@class='gh_evt_col02_02']")
   locations = doc.xpath("//th[@class='gh_evt_col03 g_txt_C']")
   deadline = doc.xpath("//th[@class='gh_evt_col05 g_txt_C']")
@@ -10,6 +10,7 @@ def bfs_scrape(doc, bf_sessions)
     next if deadline[i].text == "－"
 
     bs = BriefingSession.new
+    bs.company_id = c_id
     bs.location = locations[i].text
     bs.bs_date = times[i].text[0..9]
 
@@ -21,10 +22,21 @@ def bfs_scrape(doc, bf_sessions)
   end
 end
 
-urls = [
-  "https://job.rikunabi.com/2017/company/seminars/r639530023/",
-]
+def get_company_id(doc)
+  c_name = doc.xpath("//div[@class='dev-company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
+  search_name = Company.find_by_com_name(c_name)
+  unless search_name.nil?
+    search_name.id
+  else
+    false
+  end
+end
 
+urls = [
+  'https://job.rikunabi.com/2017/company/seminars/r531320090/',
+  'https://job.rikunabi.com/2017/company/seminars/r149681093/',
+  'https://job.rikunabi.com/2017/company/seminars/r340420058/',
+]
 opts = {
   depth_limit: 1,
   skip_query_strings: false,
@@ -35,6 +47,7 @@ opts = {
 bf_sessions = []
 urldb = []
 pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
+
 Anemone.crawl(urls, opts) do |anemone|
 
   anemone.focus_crawl do |page|
@@ -43,12 +56,14 @@ Anemone.crawl(urls, opts) do |anemone|
 
   anemone.on_every_page do |page|
     doc = page.doc
-    p c_name = doc.xpath("//div[@class='dev-company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
-    p company_id = Company.find_by_com_name(c_name).id
-    bfs_scrape(doc, bf_sessions) if page.url.to_s =~ pat
-    urldb << URL.new(page.url)
+    company_id = get_company_id(doc)
+    if company_id
+      bfs_scrape(doc, bf_sessions, company_id ) if page.url.to_s =~ pat
+      # urldb << URL.new(page.url)
+    end
    end
 
 end
 
-# bf_sessions.each { |b| p b }
+bf_sessions.each { |e| p e }
+p bf_sessions.size
