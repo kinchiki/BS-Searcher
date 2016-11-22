@@ -19,9 +19,9 @@ def bfs_scrape(doc, bf_sessions, c_id)
     bs.start_time  = time[0..4]
     bs.finish_time = time[-5..-1]
 
-    # bf_sessions << bs
-    bs.save
-    URL.new(page.url)
+    bf_sessions << bs
+    # bs.save
+    # URL.new(page.url)
 
   end
 end
@@ -67,7 +67,7 @@ Anemone.crawl(urls, opts) do |anemone|
       url = page.url.to_s
       if url =~ pat
         bfs_scrape(doc, bf_sessions, company_id)
-        URL.new() unless URL.exists?(url_val: url)
+        urldb << URL.new(briefing_session_id: , url_val: url, site_id: 1) unless URL.exists?(url_val: url)
       end
     end
   end
