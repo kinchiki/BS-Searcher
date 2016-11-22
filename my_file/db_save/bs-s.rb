@@ -1,4 +1,4 @@
-def bfs_scrape(doc, bf_sessions, c_id)
+def bfs_scrape(doc, bsu, c_id, url)
   times = doc.xpath("//th[@class='gh_evt_col02_02']")
   locations = doc.xpath("//th[@class='gh_evt_col03 g_txt_C']")
   deadline = doc.xpath("//th[@class='gh_evt_col05 g_txt_C']")
@@ -19,13 +19,13 @@ def bfs_scrape(doc, bf_sessions, c_id)
     bs.start_time  = time[0..4]
     bs.finish_time = time[-5..-1]
 
-    bf_sessions << bs
+    bsu[url] << bs
   end
 end
 
 def get_company_id(doc)
   c_name = doc.xpath("//div[@class='dev-company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
-  search_name = Company.find_by_com_name(c_name)
+  search_name = Company.find_by(com_name: c_name)
   unless search_name.nil?
     search_name.id
   else
@@ -34,11 +34,6 @@ def get_company_id(doc)
 end
 
 urls = [
-'https://job.rikunabi.com/2017/company/seminars/r483800020/',
-'https://job.rikunabi.com/2017/company/seminars/r639530023/',
-'https://job.rikunabi.com/2017/company/seminars/r334620050/',
-'https://job.rikunabi.com/2017/company/seminars/r687010049/',
-'https://job.rikunabi.com/2017/company/seminars/r648320091/',
 ]
 opts = {
   depth_limit: 1,
@@ -47,12 +42,11 @@ opts = {
   read_timeout: 5
 }
 
-bf_sessions = []
-urldb = []
+bsu = Hash.new { |h, k| h[k] = [] }
 pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
 
 Anemone.crawl(urls, opts) do |anemone|
-
+  i = 1
   anemone.focus_crawl do |page|
     page.links.keep_if { |link| link.to_s.match(pat) }
   end
@@ -61,12 +55,22 @@ Anemone.crawl(urls, opts) do |anemone|
     doc = page.doc
     company_id = get_company_id(doc)
     if company_id
-      bfs_scrape(doc, bf_sessions, company_id ) if page.url.to_s =~ pat
-      # urldb << URL.new(page.url)
+      url = page.url.to_s
+      if url =~ pat
+        bfs_scrape(doc, bsu, company_id, url) unless Url.exists?(url_val: url)
+      p i = i+1
+      end
     end
-   end
+    # sleep 1
+  end
 
 end
 
-bf_sessions.each { |e| p e }
-p bf_sessions.size
+bsu.each do |url,bs_all|
+  u = Url.new(url_val: url, site_id: 1)
+  if u.save
+    bs_all.each do |bs|
+     p BriefingSessionUrl.create(briefing_session_id: bs.id, url_id: u.id) if bs.save
+    end
+  end
+end

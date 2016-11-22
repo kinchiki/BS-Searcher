@@ -29,12 +29,7 @@ end
 urls = [
 ]
 
-# companies = []
 urls.each do |url|
   cp_scrape(Nokogiri::HTML.parse(open(url)))
   sleep 1
-_# end
-
-# companies.each do |com|
-#   com.save
-# end
+end
