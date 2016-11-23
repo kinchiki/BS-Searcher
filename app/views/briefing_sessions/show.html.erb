@@ -1,5 +1,5 @@
 <p>
-  <strong>ID</strong>
+  <strong>説明会ID</strong>
   <%= @bs.id %>
 </p>
 
@@ -32,10 +32,11 @@
   <strong>リンク</strong>
   <table>
     <% @bs.urls.each do |url| %><tr>
-      <td><%= link_to url.url_val, url.url_val %></td>
+      <td><%= link_to url.url_val, url.url_val, target: "_blank" %></td>
     </tr><% end %>
   </table>
 </p>
 
 <p><%= link_to '企業一覧へ戻る', companies_path %></p>
 <p><%= link_to '説明会一覧へ戻る', briefing_sessions_path %></p>
+<p><%= link_to 'URL一覧へ戻る', urls_path %></p>

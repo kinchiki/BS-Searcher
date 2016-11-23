@@ -1,0 +1,22 @@
+<h3><%= link_to '企業一覧', companies_path %></h3>
+<h3><%= link_to '説明会一覧', briefing_sessions_path %></h3>
+
+
+<h1>UR一覧</h1>
+
+<table>
+  <thead><tr>
+    <th>ID</th>
+    <th>URL</th>
+    <th>サイト</th>
+    <th>説明会</th>
+    <th colspan="4"></th>
+  </tr></thead>
+
+  <tbody><% @urls.each do |url| %><tr>
+    <td><%= url.id %></td>
+    <td><%= link_to url.url_val, target: "_blank" %></td>
+    <td><%= url.site.site_name %></td>
+    <td><%= link_to '詳細', url %></td>
+  </tr><% end %></tbody>
+</table>

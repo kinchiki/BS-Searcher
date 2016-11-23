@@ -1,26 +1,21 @@
 <p>
-  <strong>企業ID</strong>
-  <%= @com.id %>
+  <strong>URL_ID</strong>
+  <%= @url.id %>
 </p>
 
 <p>
-  <strong>企業名</strong>
-  <%= @com.com_name %>
+  <strong>URL</strong>
+  <%= link_to @url.url_val %>
 </p>
 
 <p>
-  <strong>本社</strong>
-  <%= @com.head_office %>
+  <strong>サイト</strong>
+  <%= @url.site.site_name %>
 </p>
 
 <p>
-  <strong>社員数</strong>
-  <%= @com.employees_number %>
-</p>
-
-<p>
-  <strong>業種</strong>
-  <%= @com.sub_str %>
+  <strong>企業</strong>
+  <%= link_to @url.briefing_sessions[0].company.com_name, @url.briefing_sessions[0].company %>
 </p>
 
 <p>
@@ -36,7 +31,7 @@
       <th colspan="6"></th>
     </tr></thead>
 
-    <tbody><% @com.briefing_sessions.each do |bs| %><tr>
+    <tbody><% @url.briefing_sessions.each do |bs| %><tr>
       <td><%= bs.id %></td>
       <td><%= bs.location %></td>
       <td><%= bs.bs_date %></td>
