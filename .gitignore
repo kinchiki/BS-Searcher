@@ -47,3 +47,4 @@ bower.json
 # MyFile
 /config/database.yml
 /my_file/thinking
+/my_file/data
