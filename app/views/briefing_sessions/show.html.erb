@@ -5,7 +5,7 @@
 
 <p>
   <strong>企業</strong>
-  <%= @bs.company.com_name %>
+  <%= link_to @bs.company.com_name, @bs.company %>
 </p>
 
 <p>
@@ -30,7 +30,12 @@
 
 <p>
   <strong>リンク</strong>
-    <% @bs.urls.each do |url| %>
-      <%= url.url_val %>
-    <% end %>
+  <table>
+    <% @bs.urls.each do |url| %><tr>
+      <td><%= link_to url.url_val, url.url_val %></td>
+    </tr><% end %>
+  </table>
 </p>
+
+<p><%= link_to '企業一覧へ戻る', companies_path %></p>
+<p><%= link_to '説明会一覧へ戻る', briefing_sessions_path %></p>

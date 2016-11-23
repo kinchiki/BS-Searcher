@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :briefing_sessions
+  resources :companies, :briefing_sessions
   root 'briefing_sessions#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

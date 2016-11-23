@@ -1,0 +1,22 @@
+<h3><%= link_to '説明会一覧', briefing_sessions_path %></h3>
+
+<h1>企業一覧</h1>
+
+<table>
+  <thead><tr>
+    <th>ID</th>
+    <th>企業</th>
+    <th>本社</th>
+    <th>社員数</th>
+    <th>詳細</th>
+    <th colspan="5"></th>
+  </tr></thead>
+
+  <tbody><% @coms.each do |com| %><tr>
+    <td><%= com.id %></td>
+    <td><%= com.com_name %></td>
+    <td><%= com.head_office %></td>
+    <td><%= com.employees_number %></td>
+    <td><%= link_to '詳細', com %></td>
+  </tr><% end %></tbody>
+</table>
