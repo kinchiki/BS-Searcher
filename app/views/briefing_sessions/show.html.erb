@@ -1,0 +1,36 @@
+<p>
+  <strong>ID</strong>
+  <%= @bs.id %>
+</p>
+
+<p>
+  <strong>企業</strong>
+  <%= @bs.company.com_name %>
+</p>
+
+<p>
+  <strong>開催地</strong>
+  <%= @bs.location %>
+</p>
+
+<p>
+  <strong>開催日</strong>
+  <%= @bs.bs_date %>
+</p>
+
+<p>
+  <strong>開始時間</strong>
+  <%= @bs.start_time.to_s(:time) %>
+</p>
+
+<p>
+  <strong>終了時間</strong>
+  <%= @bs.finish_time.to_s(:time) %>
+</p>
+
+<p>
+  <strong>リンク</strong>
+    <% @bs.urls.each do |url| %>
+      <%= url.url_val %>
+    <% end %>
+</p>

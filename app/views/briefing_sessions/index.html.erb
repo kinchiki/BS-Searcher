@@ -1,0 +1,30 @@
+<h1>説明会一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>企業ID</th>
+      <th>企業</th>
+      <th>開催地</th>
+      <th>開催日</th>
+      <th>開始時間</th>
+      <th>終了時間</th>
+      <th colspan="6"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bs_s.each do |bs| %>
+      <tr>
+        <td><%= bs.id %></td>
+        <td><%= bs.company.id %></td>
+        <td><%= bs.company.com_name %></td>
+        <td><%= bs.location %></td>
+        <td><%= bs.bs_date %></td>
+        <td><%= bs.start_time.to_s(:time) %></td>
+        <td><%= bs.finish_time.to_s(:time) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
