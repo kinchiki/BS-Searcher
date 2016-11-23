@@ -11,9 +11,75 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20161122133034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "briefing_session_urls", force: :cascade do |t|
+    t.integer  "briefing_session_id"
+    t.integer  "url_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "briefing_session_urls", ["briefing_session_id"], name: "index_briefing_session_urls_on_briefing_session_id", using: :btree
+  add_index "briefing_session_urls", ["url_id"], name: "index_briefing_session_urls_on_url_id", using: :btree
+
+  create_table "briefing_sessions", force: :cascade do |t|
+    t.integer  "company_id"
+    t.string   "location",    limit: 12, null: false
+    t.date     "bs_date",                null: false
+    t.time     "start_time",             null: false
+    t.time     "finish_time",            null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string   "com_name",         limit: 100, null: false
+    t.string   "head_office",      limit: 30,  null: false
+    t.integer  "employees_number",             null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "sub_industry_id"
+    t.string   "sub_str",          limit: 100
+  end
+
+  add_index "companies", ["sub_industry_id"], name: "index_companies_on_sub_industry_id", using: :btree
+
+  create_table "main_industries", force: :cascade do |t|
+    t.string   "main_t",     limit: 20, null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "sites", force: :cascade do |t|
+    t.string   "site_name",  limit: 30, null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "sub_industries", force: :cascade do |t|
+    t.integer  "main_industry_id"
+    t.string   "sub_t",            limit: 100, null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  create_table "urls", force: :cascade do |t|
+    t.string   "url_val",    limit: 500, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "site_id"
+  end
+
+  add_index "urls", ["site_id"], name: "index_urls_on_site_id", using: :btree
+
+  add_foreign_key "briefing_session_urls", "briefing_sessions"
+  add_foreign_key "briefing_session_urls", "urls"
+  add_foreign_key "briefing_sessions", "companies"
+  add_foreign_key "companies", "sub_industries"
+  add_foreign_key "sub_industries", "main_industries"
+  add_foreign_key "urls", "sites"
 end
