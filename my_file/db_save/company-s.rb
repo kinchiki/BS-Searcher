@@ -5,13 +5,15 @@ def cp_scrape(doc)
 
   company.com_name = doc.xpath("//h1[@class='company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
   company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
-  company.sub_str = doc.xpath("//td[@class='company-information-detail']")[0].children[1].text
+
+  industry = doc.xpath("//td[@class='company-information-detail']")[0].children
+  company.sub_str = industry[1].text
+  company.sub_str = industry[0].text if company.sub_str.empty?
 
   tmp = doc.xpath("//th[@class='company-data-th']")
   e_index = 0
   tmp.each_with_index { |node, i|
-    # if node.text =~ /●?従業員数|社員数/
-    if node.text == ("従業員数"||"社員数")
+    if node.text.include?("従業員数") || node.text.include?("社員数")
       e_index = i
       break
     end

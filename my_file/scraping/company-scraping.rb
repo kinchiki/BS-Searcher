@@ -5,20 +5,18 @@ require_relative '../class/Company.rb'
 
 def cp_scrape(doc)
   company = Company.new
-  company.name = doc.xpath("//h1[@class='company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
+  company.name = doc.xpath("//h1[@class='company-title-main']").text.gsub(/(\s|　|(株式会社))+/,'')
   company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
-  company.sub_str = doc.xpath("//td[@class='company-information-detail']")[0].children[1].text
 
-
-  # type = doc.xpath("//td[@class='company-information-detail']")[0].children
-  # main_type = type[0].text
-  # sub_type = type[1].text
+  industry = doc.xpath("//td[@class='company-information-detail']")[0].children
+  company.sub_str = industry[1].text
+  company.sub_str = industry[0].text if company.sub_str.empty?
 
   tmp = doc.xpath("//th[@class='company-data-th']")
   e_index = 0
   tmp.each_with_index { |node, i|
-    # if node.text =~ /●?従業員数|社員数/
-    if node.text == ("従業員数"||"社員数")
+    # if node.text =~ /(従業|社)員数/
+    if node.text.include?("従業員数") || node.text.include?("社員数")
       e_index = i
       break
     end
@@ -35,9 +33,6 @@ end
 
 
 urls = [
-'https://job.rikunabi.com/2017/company/top/r531320090/',
-'https://job.rikunabi.com/2017/company/top/r149681093/',
-'https://job.rikunabi.com/2017/company/top/r451581003/',
 ]
 
 companies = []

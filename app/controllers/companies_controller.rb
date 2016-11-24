@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
   def index
-    @coms ||= Company.all
+    @coms ||= Company.order(:id)
   end
 
   def show
