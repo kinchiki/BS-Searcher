@@ -1,7 +1,7 @@
 <h1>説明会検索</h1>
 
 
-<%= form_for @search_form, url: :briefing_sessions, html: {method: :get} do |f| %>
+<%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
 
   <%= f.label :location, "開催地" %>
   <%= f.text_field :location %><br>
@@ -15,34 +15,3 @@
   <%= f.submit "検索" %>
 
 <% end %>
-
-
-<table>
-  <thead><tr>
-    <th>ID</th>
-    <th>企業ID</th>
-    <th>企業</th>
-    <th>開催地</th>
-    <th>開催日</th>
-    <th>開始時間</th>
-    <th>終了時間</th>
-    <th>詳細</th>
-    <th colspan="7"></th>
-  </tr></thead>
-
-<%# if @bs_result.exists? %>
-<% if @bs_result.present? %>
-  <tbody><% @bs_result.each do |bs| %><tr>
-    <td><%= bs.id %></td>
-    <td><%= bs.company.id %></td>
-    <td><%= link_to bs.company.com_name, bs.company %></td>
-    <td><%= bs.location %></td>
-    <td><%= bs.bs_date %></td>
-    <td><%= bs.start_time.to_s(:time) %></td>
-    <td><%= bs.finish_time.to_s(:time) %></td>
-    <td><%= link_to '詳細', bs %></td>
-  </tr><% end %></tbody>
-<% else %>
-  <p>該当データ無し</p>
-<% end %>
-</table>

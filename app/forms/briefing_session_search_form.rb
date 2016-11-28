@@ -1,9 +1,9 @@
 class BriefingSessionSearchForm
   include ActiveModel::Model
 
-  attr_accessor  :location, :bs_date, :start_time, :finish_time
+  attr_accessor :location, :bs_date, :start_time, :finish_time
 
-  def search
+  def matches
     results = BriefingSession
     results = results.where(location: location) if location.present?
     results = results.where(bs_date: bs_date) if bs_date.present?

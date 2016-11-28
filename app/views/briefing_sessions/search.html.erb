@@ -1,0 +1,29 @@
+<% #binding.pry %>
+<% if @bs_results.present? %>
+<table>
+  <thead><tr>
+    <th>ID</th>
+    <th>企業ID</th>
+    <th>企業</th>
+    <th>開催地</th>
+    <th>開催日</th>
+    <th>開始時間</th>
+    <th>終了時間</th>
+    <th>詳細</th>
+  </tr></thead>
+
+  <tbody><% @bs_results.each do |bs| %><tr>
+    <td><%= bs.id %></td>
+    <td><%= bs.company.id %></td>
+    <td><%= link_to bs.company.com_name, bs.company %></td>
+    <td><%= bs.location %></td>
+    <td><%= bs.bs_date %></td>
+    <td><%= bs.start_time.to_s(:time) %></td>
+    <td><%= bs.finish_time.to_s(:time) %></td>
+    <td><%= link_to '詳細', bs %></td>
+  </tr><% end %></tbody>
+
+<% else %>
+  <p>該当データ無し</p>
+<% end %>
+</table>
