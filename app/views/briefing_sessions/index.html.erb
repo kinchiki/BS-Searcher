@@ -1,11 +1,7 @@
-<h3><%= link_to '企業一覧', companies_path %></h3>
-<h3><%= link_to 'URL一覧', urls_path %></h3>
-<h3><%= link_to '説明会検索', briefing_session_search_forms_path %></h3>
-
 <h1>説明会検索</h1>
 
 
-<%= form_for @search_form, as: 'search', url: :briefing_sessions, html: {method: :get} do |f| %>
+<%= form_for @search_form, url: :briefing_sessions, html: {method: :get} do |f| %>
 
   <%= f.label :location, "開催地" %>
   <%= f.text_field :location %><br>
@@ -34,7 +30,8 @@
     <th colspan="7"></th>
   </tr></thead>
 
-<% if @bs_result.exists? %>
+<%# if @bs_result.exists? %>
+<% if @bs_result.present? %>
   <tbody><% @bs_result.each do |bs| %><tr>
     <td><%= bs.id %></td>
     <td><%= bs.company.id %></td>

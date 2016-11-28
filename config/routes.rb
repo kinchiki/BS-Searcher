@@ -2,7 +2,14 @@ Rails.application.routes.draw do
   # resources :companies, shallow: true do
   #   resources :briefing_sessions
   # end
-  resources :companies, :briefing_sessions, :urls, :briefing_session_search_forms
+  resources :briefing_sessions, only: [:index, :show]
+  resources :companies, only: [:index, :show]
+  resources :urls, only: [:index, :show]
+  # resources :briefing_session_search_forms, only: [:index], as: :bssf do
+  #   member do
+  #     get :search
+  #   end
+  # end
   root 'briefing_sessions#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
