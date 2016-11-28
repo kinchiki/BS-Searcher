@@ -34,8 +34,7 @@
     <th colspan="7"></th>
   </tr></thead>
 
-<% unless @bs_result.present? %>
-<%= debug @bs_result %>
+<% if @bs_result.exists? %>
   <tbody><% @bs_result.each do |bs| %><tr>
     <td><%= bs.id %></td>
     <td><%= bs.company.id %></td>
@@ -48,8 +47,5 @@
   </tr><% end %></tbody>
 <% else %>
   <p>該当データ無し</p>
-  <%= debug @bs_result %>
 <% end %>
 </table>
-
-<%= debug @bs_result %>
