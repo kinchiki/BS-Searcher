@@ -1,6 +1,4 @@
 <h3><%= link_to '企業一覧', companies_path %></h3>
-<h3><%= link_to 'URL一覧', urls_path %></h3>
-<h3><%= link_to '説明会検索', briefing_session_search_forms_path %></h3>
 
 <h1>説明会検索</h1>
 
@@ -34,9 +32,8 @@
     <th colspan="7"></th>
   </tr></thead>
 
-<% unless @bs_result.present? %>
-<%= debug @bs_result %>
-  <tbody><% @bs_result.each do |bs| %><tr>
+<% if @bs_result.present? %>
+  <tbody><% @bss.each do |bs| %><tr>
     <td><%= bs.id %></td>
     <td><%= bs.company.id %></td>
     <td><%= link_to bs.company.com_name, bs.company %></td>
@@ -46,10 +43,7 @@
     <td><%= bs.finish_time.to_s(:time) %></td>
     <td><%= link_to '詳細', bs %></td>
   </tr><% end %></tbody>
-<% else %>
-  <p>該当データ無し</p>
-  <%= debug @bs_result %>
-<% end %>
+  <% else %>
+    <p>該当データ無し</p>
+  <% end %>
 </table>
-
-<%= debug @bs_result %>
