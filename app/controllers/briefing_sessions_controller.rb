@@ -1,9 +1,21 @@
 class BriefingSessionsController < ApplicationController
   def index
-    @bs_s ||= BriefingSession.order(:company_id)
+    @search_form = BriefingSessionSearchForm.new
+    # @bs_s ||= BriefingSession.order(:company_id)
+  end
+
+  def search
+    @search_form = BriefingSessionSearchForm.new(search_params)
+    @bs_results = @search_form.matches
+    # binding.pry
   end
 
   def show
     @bs = BriefingSession.find(params[:id])
+  end
+
+  private
+  def search_params
+    params.require(:briefing_session_search_form).permit(:location, :bs_date, :start_time, :finish_time)
   end
 end
