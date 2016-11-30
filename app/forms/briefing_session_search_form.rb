@@ -1,7 +1,15 @@
 class BriefingSessionSearchForm
   include ActiveModel::Model
 
-  attr_accessor :location, :bs_date, :start_time, :finish_time
+  REGISTRABLE_ATTRIBUTES = %i(
+    location
+    bs_date(1i) bs_date(2i) bs_date(3i)
+    start_time(1i) start_time(2i) start_time(3i) start_time(4i) start_time(5i)
+    start_time finish_time
+  )
+
+  attr_accessor :location, :bs_date, :start_time, :finish_time#,"bs_date(1i)", "bs_date(2i)", "bs_date(3i)"
+  # attr_accessor REGISTRABLE_ATTRIBUTES
 
   def matches
     results = BriefingSession

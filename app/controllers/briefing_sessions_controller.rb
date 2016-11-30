@@ -5,9 +5,9 @@ class BriefingSessionsController < ApplicationController
   end
 
   def search
+    # binding.pry
     @search_form = BriefingSessionSearchForm.new(search_params)
     @bs_results = @search_form.matches
-    # binding.pry
   end
 
   def show
@@ -17,5 +17,6 @@ class BriefingSessionsController < ApplicationController
   private
   def search_params
     params.require(:briefing_session_search_form).permit(:location, :bs_date, :start_time, :finish_time)
+    # params.require(:briefing_session_search_form).permit(BriefingSessionSearchForm::REGISTRABLE_ATTRIBUTES)
   end
 end
