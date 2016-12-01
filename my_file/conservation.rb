@@ -1,3 +1,19 @@
+# BriefingSessionSearchForm
+      # datetime_parats = params[:briefing_session_search_form]
+            # params[:sf_bs_date] = (1..3).map { |i| params.delete("sf_bs_date(#{i}i)") }.join("-")
+        # if params[:briefing_session_search_form]["#{attribute}(1i)"] == 1 && params[:briefing_session_search_form]["#{attribute}(4i)"].empty?
+        #   params[attribute] = ""
+        # else
+        # params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts.any?
+          # params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts[0] != "1" && time_parts[3].present?
+      # end
+
+
+
+
+
+
+
 # require 'bundler/setup'
 # require 'open-uri'
 # require 'nokogiri'
