@@ -2,15 +2,20 @@
 
 
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
-
+  <!-- defaultはinclude_blankと競合して効かない
+  default: Date.today, include_blank: true
+  selected: Date.today, # substitute 18.years.ago to prefill year
+  start_year: Date.today.year - 100,
+  end_year: Date.today.year - 18)
+   -->
   <%= f.label :location, "開催地" %>
   <%= f.text_field :location %><br>
   <%= f.label :bs_date, "開催日" %>
-  <%= f.date_select :bs_date, use_month_numbers: true, discard_year: true %><br>
+  <%= f.date_select :bs_date, default: Date.today, use_month_numbers: true %><br>
   <%= f.label :start_time, "開始時間" %>
-  <%= f.time_select :start_time %><br>
+  <%= f.time_field :start_time, include_blank: true %><br>
   <%= f.label :finish_time, "終了時間" %>
-  <%= f.time_select :finish_time %><br>
+  <%= f.time_field :finish_time, include_blank: true %><br>
 
   <%= f.submit "検索" %>
 
