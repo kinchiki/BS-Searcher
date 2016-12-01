@@ -1,15 +1,21 @@
 class BriefingSessionSearchForm
   include ActiveModel::Model
 
-  REGISTRABLE_ATTRIBUTES = %i(
-    location
-    bs_date(1i) bs_date(2i) bs_date(3i)
-    start_time(1i) start_time(2i) start_time(3i) start_time(4i) start_time(5i)
-    start_time finish_time
-  )
+  # REGISTRABLE_ATTRIBUTES = %i(location bs_date start_time finish_time)
+  attr_accessor :location, :bs_date, :start_time, :finish_time
 
-  attr_accessor :location, :bs_date, :start_time, :finish_time#,"bs_date(1i)", "bs_date(2i)", "bs_date(3i)"
-  # attr_accessor REGISTRABLE_ATTRIBUTES
+  def initialize(params = {})
+    if params.is_a?(ActionController::Parameters)
+      date_parts = (1..3).map { |i| params.delete("bs_date(#{i}i)") }
+      params[:bs_date] = date_parts.join("-") if date_parts.any?
+
+      [:start_time, :finish_time].each do |attribute|
+        time_parts = (1..5).map { |i| params.delete("#{attribute}(#{i}i)") }
+        params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts.any?
+      end
+    end
+    super
+  end
 
   def matches
     results = BriefingSession

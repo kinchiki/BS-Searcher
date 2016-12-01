@@ -6,11 +6,11 @@
   <%= f.label :location, "開催地" %>
   <%= f.text_field :location %><br>
   <%= f.label :bs_date, "開催日" %>
-  <%= f.date_field :bs_date, use_month_numbers: true, discard_year: true %><br>
+  <%= f.date_select :bs_date, use_month_numbers: true, discard_year: true %><br>
   <%= f.label :start_time, "開始時間" %>
-  <%= f.time_field :start_time %><br>
+  <%= f.time_select :start_time %><br>
   <%= f.label :finish_time, "終了時間" %>
-  <%= f.time_field :finish_time %><br>
+  <%= f.time_select :finish_time %><br>
 
   <%= f.submit "検索" %>
 
