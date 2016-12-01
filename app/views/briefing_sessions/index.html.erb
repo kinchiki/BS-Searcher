@@ -1,5 +1,7 @@
 <h1>説明会検索</h1>
 
+<%= debug params %>
+<%= debug @search_form %>
 
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
   <!-- defaultはinclude_blankと競合して効かない
@@ -13,9 +15,9 @@
   <%= f.label :bs_date, "開催日" %>
   <%= f.date_select :bs_date, default: Date.today, use_month_numbers: true %><br>
   <%= f.label :start_time, "開始時間" %>
-  <%= f.time_field :start_time, include_blank: true %><br>
+  <%= f.time_select(:start_time, include_blank: true, ignore_date: true) %><br>
   <%= f.label :finish_time, "終了時間" %>
-  <%= f.time_field :finish_time, include_blank: true %><br>
+  <%= f.time_select(:finish_time, include_blank: true, ignore_date: true) %><br>
 
   <%= f.submit "検索" %>
 

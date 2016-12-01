@@ -16,8 +16,9 @@ class BriefingSessionSearchForm
         # if params[:briefing_session_search_form]["#{attribute}(1i)"] == 1 && params[:briefing_session_search_form]["#{attribute}(4i)"].empty?
         #   params[attribute] = ""
         # else
-        time_parts = (1..5).map { |i| params.delete("#{attribute}(#{i}i)") }
-        params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts.any?
+        time_parts = (4..5).map { |i| params.delete("#{attribute}(#{i}i)") }
+        params[attribute] = time_parts.join(":") unless time_parts[0].empty?
+        # params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts.any?
           # params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts[0] != "1" && time_parts[3].present?
       end
       # end
