@@ -21,28 +21,8 @@ class BriefingSessionSearchForm
   end
 
   def matches
-    results = BriefingSession
-    results = results.where('location like ?', "%#{sf_location}%") if sf_location.present?
-    results = results.where(bs_date: sf_start_date..sf_finish_date) if sf_start_date.present? && sf_finish_date.present?
-
-    if sf_start_time.present? && sf_finish_time.present?
-      results = results.where(start_time: sf_start_time...sf_finish_time)
-      results = results.where(finish_time: sf_start_time..sf_finish_time)
-    else
-      results = results.where(start_time: sf_start_time) if sf_start_time.present?
-      results = results.where(finish_time: sf_start_time) if sf_finish_time.present?
-    end
+    BriefingSession.location_like(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time).order(:bs_date,:start_time)
     # results = results.joins(:address).where("address.tel" =&gt; tel) if tel.present?
-
-    results.order(:bs_date,:start_time)
   end
-
-    # if sf_start_date.present?
-    #   if sf_finish_date.present?
-    #     results = results.where(bs_date: sf_start_date..sf_finish_date)
-    #   else
-    #     results = results.where(bs_date >= sf_start_date)
-    #   end
-    # end
 
 end

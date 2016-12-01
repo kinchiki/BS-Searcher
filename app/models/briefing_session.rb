@@ -10,4 +10,29 @@ class BriefingSession < ActiveRecord::Base
   validates :bs_date, presence: true
   # validates :start_time, presence: true
   # validates :finish_time, presence: true
+
+  scope :location_like, -> loc {
+    where('location like ?', "%#{loc}%") if loc.present?
+  }
+
+  scope :date_between, -> from, to {
+    if from.present? && to.present?
+      where(bs_date: from..to)
+    elsif from.present?
+      where('bs_date >= ?', from)
+    elsif to.present?
+      where('bs_date <= ?', to)
+    end
+  }
+
+  scope :time_between, -> from, to {
+    if from.present? && to.present?
+      # where('start_time >= ? and start_time < ? finish_time <= ?', from, to, to)
+      where(start_time: from...to).where('finish_time <= ?', to)
+    elsif from.present?
+      where('start_time >= ?', from)
+    elsif to.present?
+      where('finish_time <= ?', to)
+    end
+  }
 end
