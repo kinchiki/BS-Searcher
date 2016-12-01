@@ -1,20 +1,15 @@
 <h1>説明会検索</h1>
 
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
-  <!-- defaultはinclude_blankと競合して効かない
-  default: Date.today, include_blank: true
-  selected: Date.today, # substitute 18.years.ago to prefill year
-  start_year: Date.today.year - 100,
-  end_year: Date.today.year - 18)
-   -->
-  <%= f.label :sf_location, "開催地" %>
-  <%= f.text_field :sf_location %><br>
-  <%= f.label :sf_bs_date, "開催日" %>
-  <%= f.date_select :sf_bs_date, default: Date.today, use_month_numbers: true %><br>
-  <%= f.label :sf_start_time, "開始時間" %>
-  <%= f.time_select(:sf_start_time, include_blank: true, ignore_date: true) %><br>
-  <%= f.label :sf_finish_time, "終了時間" %>
-  <%= f.time_select(:sf_finish_time, include_blank: true, ignore_date: true) %><br>
+
+  <%= f.label(:sf_location, "開催地") %>
+  <%= f.text_field(:sf_location) %><br>
+  <%= f.label(:sf_start_date, "開催日") %>
+  <%= f.date_select(:sf_start_date, default: Date.today, use_month_numbers: true) %> 〜
+  <%= f.date_select(:sf_finish_date, default: Date.today, use_month_numbers: true) %><br>
+  <%= f.label(:sf_start_time, "開催時間") %>
+  <%= f.time_select(:sf_start_time, include_blank: true, ignore_date: true) %> 〜
+  <%= f.time_select(:sf_finish_time, include_blank: true, ignore_date: true) %><br><br>
 
   <%= f.submit "検索" %>
 

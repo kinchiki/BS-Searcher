@@ -1,3 +1,13 @@
+  #form_for
+  # <!-- defaultはinclude_blankと競合して効かない
+  # default: Date.today, include_blank: true
+  # selected: Date.today, # substitute 18.years.ago to prefill year
+  # start_year: Date.today.year - 100,
+  # end_year: Date.today.year - 18)
+  #  -->
+
+
+
 # BriefingSessionSearchForm
       # datetime_parats = params[:briefing_session_search_form]
             # params[:sf_bs_date] = (1..3).map { |i| params.delete("sf_bs_date(#{i}i)") }.join("-")

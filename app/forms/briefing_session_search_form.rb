@@ -1,14 +1,16 @@
 class BriefingSessionSearchForm
   include ActiveModel::Model
 
-  REGISTRABLE_ATTRIBUTES = %i(sf_location sf_bs_date sf_start_time sf_finish_time)
+  REGISTRABLE_ATTRIBUTES = %i(sf_location sf_start_date sf_finish_date sf_start_time sf_finish_time)
   attr_accessor(*REGISTRABLE_ATTRIBUTES)
 
   def initialize(params = {})
     if params.is_a?(ActionController::Parameters)
       # ハッシュからdeleteするとそのキーの値が返る
-      date_parts = (1..3).map { |i| params.delete("sf_bs_date(#{i}i)") }
-      params[:sf_bs_date] = date_parts.join("-") if date_parts.any?
+      [:sf_start_date, :sf_finish_date].each do |attribute|
+        date_parts = (1..3).map { |i| params.delete("#{attribute}(#{i}i)") }
+        params[attribute] = date_parts.join("-") if date_parts.any?
+      end
 
       [:sf_start_time, :sf_finish_time].each do |attribute|
         time_parts = (4..5).map { |i| params.delete("#{attribute}(#{i}i)") }
@@ -21,7 +23,8 @@ class BriefingSessionSearchForm
   def matches
     results = BriefingSession
     results = results.where('location like ?', "%#{sf_location}%") if sf_location.present?
-    results = results.where(bs_date: sf_bs_date) if sf_bs_date.present?
+    results = results.where(bs_date: sf_start_date..sf_finish_date) if sf_start_date.present? && sf_finish_date.present?
+
     if sf_start_time.present? && sf_finish_time.present?
       results = results.where(start_time: sf_start_time...sf_finish_time)
       results = results.where(finish_time: sf_start_time..sf_finish_time)
@@ -31,7 +34,15 @@ class BriefingSessionSearchForm
     end
     # results = results.joins(:address).where("address.tel" =&gt; tel) if tel.present?
 
-    results.order(:start_time)
+    results.order(:bs_date,:start_time)
   end
+
+    # if sf_start_date.present?
+    #   if sf_finish_date.present?
+    #     results = results.where(bs_date: sf_start_date..sf_finish_date)
+    #   else
+    #     results = results.where(bs_date >= sf_start_date)
+    #   end
+    # end
 
 end
