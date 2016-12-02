@@ -30,13 +30,10 @@
 
 <p>
   <strong>リンク</strong>
-  <table>
+  <div class="table-responsive"><table>
+
     <% @bs.urls.each do |url| %><tr>
       <td><%= link_to url.url_val, url.url_val, target: "_blank" %></td>
     </tr><% end %>
-  </table>
+  </table></div>
 </p>
-
-<p><%= link_to '企業一覧へ戻る', companies_path %></p>
-<p><%= link_to '説明会一覧へ戻る', briefing_sessions_path %></p>
-<p><%= link_to 'URL一覧へ戻る', urls_path %></p>

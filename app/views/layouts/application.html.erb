@@ -8,18 +8,11 @@
 </head>
 <body>
 
-<h3><%= link_to '企業一覧', companies_path %></h3>
-<h3><%= link_to '説明会一覧', briefing_sessions_path %></h3>
-<h3><%= link_to 'URL一覧', urls_path %></h3>
-
-
-<%= yield %>
-
-
-<h3><%= link_to '企業一覧に戻る', companies_path %></h3>
-<h3><%= link_to '説明会一覧に戻る', briefing_sessions_path %></h3>
-<h3><%= link_to 'URL一覧に戻る', urls_path %></h3>
-
+<%= render 'layouts/header' %>
+  <div class="container">
+    <%= yield %>
+    <%= render 'layouts/footer' %>
+  </div>
 
 </body>
 </html>
