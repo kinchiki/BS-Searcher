@@ -90,3 +90,24 @@ footer ul li {
   float: left;
   margin-left: 15px;
 }
+
+
+table {
+  @extend .table;
+  @extend .table-striped;
+}
+
+input[type="submit"] {
+  @extend .btn;
+  @extend .btn-lg;
+  @extend .btn-primary;
+  @extend .active;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*
+form {
+  text-align: center;
+}
+*/

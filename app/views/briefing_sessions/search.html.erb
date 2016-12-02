@@ -2,6 +2,7 @@
 <%= debug @search_form %>
 <% #binding.pry %>
 <% if @bs_results.present? %>
+<div class="table-responsive">
 <table>
   <thead><tr>
     <th>ID</th>
@@ -29,3 +30,4 @@
   <p>該当データ無し</p>
 <% end %>
 </table>
+</div>
