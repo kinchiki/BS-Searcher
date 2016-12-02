@@ -3,7 +3,7 @@
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
 
   <%= f.label(:sf_location, "開催地") %>
-  <%= f.text_field(:sf_location) %><br>
+  <%= f.collection_select(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_blank: true) %><br>
   <%= f.label(:sf_start_date, "開催日") %>
   <%= f.date_field(:sf_start_date) %> 〜
   <%= f.date_field(:sf_finish_date) %><br>
