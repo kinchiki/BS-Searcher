@@ -5,8 +5,8 @@
   <%= f.label(:sf_location, "開催地") %>
   <%= f.text_field(:sf_location) %><br>
   <%= f.label(:sf_start_date, "開催日") %>
-  <%= f.date_select(:sf_start_date, default: Date.today, use_month_numbers: true) %> 〜
-  <%= f.date_select(:sf_finish_date, default: Date.today, use_month_numbers: true) %><br>
+  <%= f.date_field(:sf_start_date) %> 〜
+  <%= f.date_field(:sf_finish_date) %><br>
   <%= f.label(:sf_start_time, "開催時間") %>
   <%= f.time_select(:sf_start_time, include_blank: true, ignore_date: true) %> 〜
   <%= f.time_select(:sf_finish_time, include_blank: true, ignore_date: true) %><br><br>

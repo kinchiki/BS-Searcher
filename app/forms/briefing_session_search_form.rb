@@ -7,11 +7,6 @@ class BriefingSessionSearchForm
   def initialize(params = {})
     if params.is_a?(ActionController::Parameters)
       # ハッシュからdeleteするとそのキーの値が返る
-      [:sf_start_date, :sf_finish_date].each do |attribute|
-        date_parts = (1..3).map { |i| params.delete("#{attribute}(#{i}i)") }
-        params[attribute] = date_parts.join("-") if date_parts.any?
-      end
-
       [:sf_start_time, :sf_finish_time].each do |attribute|
         time_parts = (4..5).map { |i| params.delete("#{attribute}(#{i}i)") }
         params[attribute] = time_parts.join(":") unless time_parts[0].empty?
