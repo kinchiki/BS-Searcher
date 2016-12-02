@@ -16,7 +16,7 @@ class BriefingSessionSearchForm
   end
 
   def matches
-    BriefingSession.location_like(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time).order(:bs_date,:start_time)
+    BriefingSession.place(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time).order(:bs_date,:start_time)
     # results = results.joins(:address).where("address.tel" =&gt; tel) if tel.present?
   end
 

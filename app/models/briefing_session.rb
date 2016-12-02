@@ -11,8 +11,8 @@ class BriefingSession < ActiveRecord::Base
   # validates :start_time, presence: true
   # validates :finish_time, presence: true
 
-  scope :location_like, -> loc {
-    where('location like ?', "%#{loc}%") if loc.present?
+  scope :place, -> loc {
+    where(location: loc) if loc.present?
   }
 
   scope :date_between, -> from, to {
