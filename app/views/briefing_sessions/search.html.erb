@@ -1,6 +1,24 @@
 <%= debug params %>
 <%= debug @search_form %>
 <% #binding.pry %>
+
+<%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
+
+  <%= f.label(:sf_location, "開催地") %>
+  <%= f.collection_select(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_blank: true) %><br>
+  <%= f.label(:sf_start_date, "開催日") %>
+  <%= f.date_field(:sf_start_date) %> 〜
+  <%= f.date_field(:sf_finish_date) %><br>
+  <%= f.label(:sf_start_time, "開催時間") %>
+  <%= f.time_select(:sf_start_time, include_blank: true, ignore_date: true, minute_step: 15) %> 〜
+  <%= f.time_select(:sf_finish_time, include_blank: true, ignore_date: true, minute_step: 15) %><br><br>
+
+  <%= f.submit "検索" %>
+
+<% end %>
+
+<hr>
+
 <% if @bs_results.present? %>
 <div class="table-responsive">
 <table>
