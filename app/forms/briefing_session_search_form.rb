@@ -20,7 +20,7 @@ class BriefingSessionSearchForm
 
   def matches
     results = BriefingSession.place(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time)
-    results = results.includes(:company).where(companies: {employees_number: sf_employees_number}).references(:categories) if sf_employees_number.present?
+    results = results.includes(:company).references(:company).where('employees_number < ?', sf_employees_number) if sf_employees_number.present?
     # results = results.joins(:company).where('company.employees_number >= ?', sf_employees_number) if sf_employees_number.present?
     results.order(:bs_date,:start_time)
   end
