@@ -13,6 +13,7 @@
     <th>ID</th>
     <th>企業ID</th>
     <th>企業</th>
+    <th>社員数</th>
     <th>開催地</th>
     <th>開催日</th>
     <th>開始時間</th>
@@ -24,6 +25,7 @@
     <td><%= bs.id %></td>
     <td><%= bs.company.id %></td>
     <td><%= link_to bs.company.com_name, bs.company %></td>
+    <td><%= bs.company.employees_number %></td>
     <td><%= bs.location %></td>
     <td><%= bs.bs_date %></td>
     <td><%= bs.start_time.to_s(:time) %></td>
