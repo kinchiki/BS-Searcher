@@ -1,3 +1,29 @@
+  #form_for
+  # <!-- defaultはinclude_blankと競合して効かない
+  # default: Date.today, include_blank: true
+  # selected: Date.today, # substitute 18.years.ago to prefill year
+  # start_year: Date.today.year - 100,
+  # end_year: Date.today.year - 18)
+  #  -->
+
+
+
+# BriefingSessionSearchForm
+      # datetime_parats = params[:briefing_session_search_form]
+            # params[:sf_bs_date] = (1..3).map { |i| params.delete("sf_bs_date(#{i}i)") }.join("-")
+        # if params[:briefing_session_search_form]["#{attribute}(1i)"] == 1 && params[:briefing_session_search_form]["#{attribute}(4i)"].empty?
+        #   params[attribute] = ""
+        # else
+        # params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts.any?
+          # params[attribute] = Time.zone.local(*time_parts).to_s(:time) if time_parts[0] != "1" && time_parts[3].present?
+      # end
+
+
+
+
+
+
+
 # require 'bundler/setup'
 # require 'open-uri'
 # require 'nokogiri'

@@ -1,0 +1,43 @@
+<p>
+  <strong>URL_ID</strong>
+  <%= @url.id %>
+</p>
+
+<p>
+  <strong>URL</strong>
+  <%= link_to @url.url_val, @url.url_val, target: "_blank" %>
+</p>
+
+<p>
+  <strong>サイト</strong>
+  <%= @url.site.site_name %>
+</p>
+
+<p>
+  <strong>企業</strong>
+  <%= link_to @url.briefing_sessions[0].company.com_name, @url.briefing_sessions[0].company %>
+</p>
+
+<p>
+  <strong>説明会</strong>
+<div class="table-responsive"><table>
+    <thead><tr>
+      <th>ID</th>
+      <th>開催地</th>
+      <th>開催日</th>
+      <th>開始時間</th>
+      <th>終了時間</th>
+      <th>詳細</th>
+      <th colspan="6"></th>
+    </tr></thead>
+
+    <tbody><% @url.briefing_sessions.each do |bs| %><tr>
+      <td><%= bs.id %></td>
+      <td><%= bs.location %></td>
+      <td><%= bs.bs_date %></td>
+      <td><%= bs.start_time.to_s(:time) %></td>
+      <td><%= bs.finish_time.to_s(:time) %></td>
+      <td><%= link_to '詳細', bs %></td>
+    </tr><% end %></tbody>
+  </table></div>
+</p>
