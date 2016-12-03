@@ -5,6 +5,7 @@ class BriefingSessionsController < ApplicationController
   end
 
   def search
+    # binding.pry
     @search_form = BriefingSessionSearchForm.new(search_params)
     @bs_results = @search_form.matches
     # binding.pry

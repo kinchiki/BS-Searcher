@@ -1,7 +1,10 @@
 class BriefingSessionSearchForm
   include ActiveModel::Model
 
-  REGISTRABLE_ATTRIBUTES = %i(sf_location sf_start_date sf_finish_date sf_start_time sf_finish_time)
+  REGISTRABLE_ATTRIBUTES = %i(
+    sf_location sf_start_date sf_finish_date sf_start_time sf_finish_time
+    head_office sf_employees_number sub_str
+  )
   attr_accessor(*REGISTRABLE_ATTRIBUTES)
 
   def initialize(params = {})
@@ -16,8 +19,10 @@ class BriefingSessionSearchForm
   end
 
   def matches
-    BriefingSession.place(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time).order(:bs_date,:start_time)
-    # results = results.joins(:address).where("address.tel" =&gt; tel) if tel.present?
+    results = BriefingSession.place(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time)
+    results = results.includes(:company).where(companies: {employees_number: sf_employees_number}).references(:categories) if sf_employees_number.present?
+    # results = results.joins(:company).where('company.employees_number >= ?', sf_employees_number) if sf_employees_number.present?
+    results.order(:bs_date,:start_time)
   end
 
 end

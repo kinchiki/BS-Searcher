@@ -3,7 +3,11 @@
 <% #binding.pry %>
 
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
+  <h2>企業</h2>
+  <%= f.label(:sf_employees_number, "社員数") %>
+  <%= f.text_field(:sf_employees_number) %>
 
+  <h2>説明会</h2>
   <%= f.label(:sf_location, "開催地") %>
   <%= f.collection_select(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_blank: true) %><br>
   <%= f.label(:sf_start_date, "開催日") %>
