@@ -1,9 +1,9 @@
 class UrlsController < ApplicationController
   def index
-    @urls ||= Url.all
+    @urls = Url.all.includes(:site)
   end
 
   def show
-    @url = Url.find(params[:id])
+    @url = Url.includes(briefing_sessions: :company).find(params[:id])
   end
 end
