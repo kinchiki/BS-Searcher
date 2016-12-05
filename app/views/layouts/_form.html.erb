@@ -1,6 +1,9 @@
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
+  <h2>サイト</h2>
+  <%= f.text_field(:sf_from_emp_num) %> 〜
+
   <h2>企業</h2>
-  <%= f.label(:sf_from_emp_num, "社員数") %>
+  <%= f.label(:sf_from_emp_num, "従業員数") %>
   <%= f.text_field(:sf_from_emp_num) %> 〜
   <%= f.text_field(:sf_to_emp_num) %><br>
   <%= f.label(:sf_sub, "業種") %>

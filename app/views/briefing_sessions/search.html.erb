@@ -1,5 +1,6 @@
-<%= debug params %>
+<% #debug params %>
 <%= debug @search_form %>
+<%= debug @bs_results.to_sql %>
 <% #binding.pry %>
 
 <%= render 'layouts/form' %>
@@ -12,8 +13,8 @@
   <thead><tr>
     <th>ID</th>
     <th>企業ID</th>
-    <th>企業</th>
-    <th>社員数</th>
+    <th>開催企業</th>
+    <th>従業員数</th>
     <th>開催地</th>
     <th>開催日</th>
     <th>開始時間</th>
