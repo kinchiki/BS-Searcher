@@ -16,4 +16,8 @@ class Company < ActiveRecord::Base
       where('employees_number <= ?', to)
     end
   }
+
+  scope  :include_sub, -> type {
+    where('sub_str like ?', "%#{type}%") if type.present?
+  }
 end
