@@ -1,6 +1,6 @@
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
   <h2>サイト</h2>
-  <%= f.text_field(:sf_from_emp_num) %> 〜
+  <%= f.collection_check_boxes(:sf_site, Site::Site.all, :id, :site_name ) %>
 
   <h2>企業</h2>
   <%= f.label(:sf_from_emp_num, "従業員数") %>

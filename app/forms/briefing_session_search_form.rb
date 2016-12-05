@@ -21,7 +21,7 @@ class BriefingSessionSearchForm
 
   def matches
     # results = BriefingSession.includes(:company).references(:company) どっちがいい？
-    results = BriefingSession.includes(:company).joins(:company)
+    results = BriefingSession.includes(:company, urls: :site).joins(:company, urls: :site)
     results = results.place(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time)
     results = results.merge(Company.employees_between(sf_from_emp_num, sf_to_emp_num))
     results = results.merge(Company.include_sub(sf_sub))
