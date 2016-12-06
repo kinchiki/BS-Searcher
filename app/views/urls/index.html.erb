@@ -1,0 +1,20 @@
+<h1>URL一覧</h1>
+
+<div class="table-responsive">
+<table>
+  <thead><tr>
+    <th>ID</th>
+    <th>URL</th>
+    <th>サイト</th>
+    <th>説明会</th>
+    <th colspan="4"></th>
+  </tr></thead>
+
+  <tbody><% @urls.each do |url| %><tr>
+    <td><%= url.id %></td>
+    <td><%= link_to url.url_val, target: "_blank" %></td>
+    <td><%= url.site.site_name %></td>
+    <td><%= link_to '詳細', url %></td>
+  </tr><% end %></tbody>
+</table>
+</div>

@@ -1,0 +1,48 @@
+<p>
+  <strong>企業ID</strong>
+  <%= @com.id %>
+</p>
+
+<p>
+  <strong>企業名</strong>
+  <%= @com.com_name %>
+</p>
+
+<p>
+  <strong>本社</strong>
+  <%= @com.head_office %>
+</p>
+
+<p>
+  <strong>社員数</strong>
+  <%= @com.employees_number %>
+</p>
+
+<p>
+  <strong>業種</strong>
+  <%= @com.sub_str %>
+</p>
+
+<p>
+  <strong>説明会</strong>
+  <div class="table-responsive"><table>
+    <thead><tr>
+      <th>ID</th>
+      <th>開催地</th>
+      <th>開催日</th>
+      <th>開始時間</th>
+      <th>終了時間</th>
+      <th>詳細</th>
+      <th colspan="6"></th>
+    </tr></thead>
+
+    <tbody><% @com.briefing_sessions.each do |bs| %><tr>
+      <td><%= bs.id %></td>
+      <td><%= bs.location %></td>
+      <td><%= bs.bs_date %></td>
+      <td><%= bs.start_time.to_s(:time) %></td>
+      <td><%= bs.finish_time.to_s(:time) %></td>
+      <td><%= link_to '詳細', bs %></td>
+    </tr><% end %></tbody>
+  </table></div>
+</p>

@@ -1,0 +1,39 @@
+<p>
+  <strong>説明会ID</strong>
+  <%= @bs.id %>
+</p>
+
+<p>
+  <strong>企業</strong>
+  <%= link_to @bs.company.com_name, @bs.company %>
+</p>
+
+<p>
+  <strong>開催地</strong>
+  <%= @bs.location %>
+</p>
+
+<p>
+  <strong>開催日</strong>
+  <%= @bs.bs_date %>
+</p>
+
+<p>
+  <strong>開始時間</strong>
+  <%= @bs.start_time.to_s(:time) %>
+</p>
+
+<p>
+  <strong>終了時間</strong>
+  <%= @bs.finish_time.to_s(:time) %>
+</p>
+
+<p>
+  <strong>リンク</strong>
+  <div class="table-responsive"><table>
+
+    <% @bs.urls.each do |url| %><tr>
+      <td><%= link_to url.url_val, url.url_val, target: "_blank" %></td>
+    </tr><% end %>
+  </table></div>
+</p>
