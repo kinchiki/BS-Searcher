@@ -5,9 +5,12 @@ class BriefingSessionsController < ApplicationController
   end
 
   def search
-    # binding.pry
     @search_form = BriefingSessionSearchForm.new(search_params)
     @bs_results = @search_form.matches
+    # binding.pry
+    @search_form = BriefingSessionSearchForm.new if @search_form.sf_start_time.present? || @search_form.sf_finish_time.present?
+    #   @search_form.sf_start_time  = ""
+    #   @search_form.sf_finish_time = ""
     # binding.pry
   end
 
