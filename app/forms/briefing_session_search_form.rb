@@ -29,5 +29,4 @@ class BriefingSessionSearchForm
 
     results.order(:bs_date, :start_time)
   end
-
 end
