@@ -1,3 +1,9 @@
+    #企業
+    # results = results.includes(:company).references(:company).where('employees_number < ?', sf_employees_number) if sf_employees_number.present?
+    # results = results.joins(:company).where('company.employees_number >= ?', sf_employees_number) if sf_employees_number.present?
+
+
+
   #form_for
   # <!-- defaultはinclude_blankと競合して効かない
   # default: Date.today, include_blank: true

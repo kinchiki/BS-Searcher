@@ -35,4 +35,6 @@ class BriefingSession < ActiveRecord::Base
       where('finish_time <= ?', to)
     end
   }
+
+  scope :com_conect, -> { includes(:company).references(:company) }
 end

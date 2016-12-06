@@ -6,4 +6,18 @@ class Company < ActiveRecord::Base
   validates :head_office, presence: true, length: { in: 2..20 }
   validates :employees_number, presence: true, numericality: { only_integer: true, less_than: 350000 }
   # validates :sub_industry_id, presence: true
+
+    scope  :employees_between, -> from, to {
+    if from.present? && to.present?
+      where(employees_number: from..to)
+    elsif from.present?
+      where('employees_number >= ?', from)
+    elsif to.present?
+      where('employees_number <= ?', to)
+    end
+  }
+
+  scope  :include_sub, -> type {
+    where('sub_str like ?', "%#{type}%") if type.present?
+  }
 end
