@@ -73,3 +73,5 @@ test:
 #
 production:
   <<: *default
+  username:
+  password:
