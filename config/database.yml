@@ -11,11 +11,11 @@ default: &default
   pool: 5
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
-  host:     <%= ENV['DB_HOST'] %>
-  timeout: 5000
+  # timeout: 5000
 
 development:
   <<: *default
+  host:     <%= ENV['DB_HOST'] %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -47,6 +47,7 @@ development:
 test:
   <<: *default
   database: <%= ENV['DATABASE'] %>
+  host:     <%= ENV['DB_HOST'] %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
