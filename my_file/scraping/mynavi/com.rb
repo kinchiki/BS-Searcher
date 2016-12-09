@@ -10,21 +10,33 @@ def cp_scrape(doc)
   head = doc.xpath("//div[@class='place']/dl/dd")
   company.head_office = head[0].text.sub(/(\r|\n|\t)+/, '')
   company.sub_str = doc.xpath("//div[@class='category']/ul/li/a").text
-  company.employees_number = head[3].text.sub(/名.+/, '').delete(",").to_i
+  if head[3].nil?
+    company.employees_number = 0
+  else
+    company.employees_number = head[3].text.sub(/名.+/, '').sub(/[^\d]+/, "").delete(",").to_i
+  end
 
-  company
+  company.show_data
+  puts
 end
 
 
 urls = [
+'https://job.mynavi.jp/17/pc/search/corp102816/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp83820/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp52644/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp202711/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp68756/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp92934/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp92316/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp211471/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp205629/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp64691/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp63983/outline.html',
+'https://job.mynavi.jp/17/pc/search/corp72425/outline.html',
 ]
 
-companies = []
 urls.each do |url|
-  companies << cp_scrape(Nokogiri::HTML.parse(open(url)))
-end
-
-companies.each do |cp|
-  cp.show_data
-  puts
+  cp_scrape(Nokogiri::HTML.parse(open(url)))
+  sleep 1
 end
