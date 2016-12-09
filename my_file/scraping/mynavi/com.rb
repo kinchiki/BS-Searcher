@@ -7,12 +7,16 @@ def cp_scrape(doc)
   company = Company.new
   company.name = doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+\］|【.+】|／.+)+/,'')
   p company.name
-  company.head_office = doc.xpath("//div[@class='place']/dl/dd").first.text.gsub(/(\r|\n|\t)+/,'')
+
+  head = doc.xpath("//div[@class='place']/dl/dd")
+  company.head_office = head[0].text.sub(/(\r|\n|\t)+/,'')
   p company.head_office
 
-  # industry = doc.xpath("//td[@class='company-information-detail']")[0].children
-  # company.sub_str = industry[1].text
-  # company.sub_str = industry[0].text if company.sub_str.empty?
+  company.sub_str = doc.xpath("//div[@class='category']/ul/li/a").text
+  p company.sub_str
+
+  # company.employees_number = head[3]
+  # p company.employees_number
 
   # tmp = doc.xpath("//th[@class='company-data-th']")
   # e_index = 0
