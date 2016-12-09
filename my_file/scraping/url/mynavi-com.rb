@@ -7,5 +7,7 @@ doc = Nokogiri::HTML(open(url))
 nodesets = doc.xpath("//h3/a")
 
 nodesets.each do |node|
-  puts "'http://job.mynavi.jp/#{node[:href]}',"
+  u = node[:href]
+  u.sub!("flex", "outline") if u.include?("flex")
+  puts "'http://job.mynavi.jp#{u}',"
 end
