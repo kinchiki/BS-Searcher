@@ -7,7 +7,8 @@ def cp_scrape(doc)
   company = Company.new
   company.name = doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+\］|【.+】|／.+)+/,'')
   p company.name
-  # company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
+  company.head_office = doc.xpath("//div[@class='place']/dl/dd").first.text.gsub(/(\r|\n|\t)+/,'')
+  p company.head_office
 
   # industry = doc.xpath("//td[@class='company-information-detail']")[0].children
   # company.sub_str = industry[1].text
@@ -27,13 +28,14 @@ def cp_scrape(doc)
   # else
   #   company.employees_number = doc.xpath("//td[@class='company-data-td']")[e_index].text.sub(/(名|人).+/,"").tr("０-９", "0-9").sub(/[^\d]+/, "").delete(",").to_i
   # end
-
+  puts
   company
 
 end
 
 
 urls = [
+  'http://job.mynavi.jp/17/pc/search/corp102356/outline.html',
 'http://job.mynavi.jp/17/pc/search/corp94059/outline.html',
 'http://job.mynavi.jp/17/pc/search/corp112318/outline.html',
 'http://job.mynavi.jp/17/pc/search/corp214076/outline.html',
