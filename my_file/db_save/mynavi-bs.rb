@@ -31,11 +31,16 @@ def bs_scrape(doc, com)
     bs.start_time  = times[i].text[0..4].delete("～")
     bs.finish_time = times[i].text[-5..-1].delete("～")
 
-    p bs
-    bss << bs
+    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
+    if check.blank?
+      p bs
+      bss << bs
+    else
+      p check
+      bss << check
+    end
   end
 
-  puts
   bss
 end
 

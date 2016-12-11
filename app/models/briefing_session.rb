@@ -35,4 +35,8 @@ class BriefingSession < ActiveRecord::Base
       where('finish_time <= ?', to)
     end
   }
+
+  scope :equal, -> com, loc, da, st, fi{
+    where("company_id = ? AND location = ? AND bs_date = ? AND start_time = ? AND finish_time = ?", com, loc, da, st, fi)
+  }
 end
