@@ -6,7 +6,6 @@ require_relative '../../class/BriefingSession.rb'
 DOMAIN = "https://job.mynavi.jp"
 
 def bs_scrape(doc)
-  sleep 1
   bss = []
 
   locations = doc.xpath("//td[@class='area']")
@@ -51,25 +50,4 @@ def get_bs_urls(links)
   bs_urls
 end
 
-urls = [
-'https://job.mynavi.jp/17/pc/corp111936/sem.html',
-'https://job.mynavi.jp/17/pc/corp214180/sem.html',
-'https://job.mynavi.jp/17/pc/corp102356/sem.html',
-'https://job.mynavi.jp/17/pc/corp113313/sem.html',
-'https://job.mynavi.jp/17/pc/corp102816/sem.html',
-'https://job.mynavi.jp/17/pc/corp83820/sem.html',
-'https://job.mynavi.jp/17/pc/corp52644/sem.html',
-'https://job.mynavi.jp/17/pc/corp202711/sem.html',
-]
-
-urls.each do |url|
-  doc = Nokogiri::HTML.parse(open(url))
-  seminar_links = doc.xpath("//h3[@class='hdg01']/a")
-  if seminar_links.empty?
-    bs_scrape(doc)
-  else
-    get_bs_urls(seminar_links).each { |bs_url|
-      bs_scrape(Nokogiri::HTML.parse(open(bs_url)))
-    }
-  end
-end
+bs_scrape(Nokogiri::HTML.parse(open("https://job.mynavi.jp/17/pc/corpinfo/displaySeminar/index?optNo=IIgtXC&corpId=2369")))
