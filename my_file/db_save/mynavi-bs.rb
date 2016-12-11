@@ -33,14 +33,16 @@ def bs_scrape(doc, com)
 
     check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
     if check.blank?
-      p bs
+      # p bs
+      bs.save
       bss << bs
     else
-      p check
+      # p check
       bss << check
     end
   end
 
+  puts
   bss
 end
 
@@ -62,17 +64,27 @@ def get_company(c_name)
 end
 
 def save_data(bss, url)
-  u = Url.new(url_val: url, site_id: 2)
-  if u.save
-    bss.each do |bs|
-     p u.briefing_session_urls.create(briefing_session_id: bs.id) if bs.save
+  p url
+  u = Url.where(url_val: url)
+  if u.blank?
+    u = Url.new(url_val: url, site_id: 2)
+    if u.save
+      bss.each do |bs|
+        p u.briefing_session_urls.create(briefing_session_id: bs.id) if bs.present?
+      end
     end
+  # else
+  #   bss.each do |bs|
+  #     p BriefingSessionUrl.create(briefing_session_id: bs.id, url_id: u.id) if bs.id.present? && u.id.present?
+  #   end
   end
+  puts
 end
 
+
+
 urls = [
-'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=66795',
-]
+'https://job.mynavi.jp/17/pc/corp72425/sem.html',]
 
 urls.each do |base_url|
   doc = Nokogiri::HTML.parse(open(base_url))
@@ -81,12 +93,12 @@ urls.each do |base_url|
   if seminar_links.empty?
     com = get_company(doc.xpath("//div[@class='inner']/h3").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
     bss = bs_scrape(doc, com) if com
-    save_data(bss, base_url) unless bss.empty?
+    save_data(bss, base_url) unless bss.blank?
   else
     com = get_company(doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
     get_bs_urls(seminar_links).each { |bs_url|
       bss = bs_scrape(Nokogiri::HTML.parse(open(bs_url)), com) if com
-      save_data(bss, bs_url) unless bss.empty?
+      save_data(bss, bs_url) unless bss.blank?
     }
   end
 end
