@@ -1,13 +1,11 @@
-require 'bundler/setup'
 require 'open-uri'
-require 'nokogiri'
-require_relative '../../class/Company.rb'
-require_relative '../../class/BriefingSession.rb'
 
 def cp_scrape(doc)
   company = Company.new
 
-  company.name = doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+\］|【.+】|／.+)+/, '')
+  company.com_name = doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+\］|【.+】|／.+)+/, '')
+  return if Company.exists?(com_name: company.com_name)
+
   head = doc.xpath("//div[@class='place']/dl/dd")
   company.head_office = head[0].text.sub(/(\r|\n|\t)+/, '')
   company.sub_str = doc.xpath("//div[@class='category']/ul/li/a").text
@@ -17,7 +15,8 @@ def cp_scrape(doc)
     company.employees_number = head[3].text.sub(/名.+/, '').sub(/[^\d]+/, "").delete(",").to_i
   end
 
-  company.show_data
+  company.save
+  p company
   puts
 end
 

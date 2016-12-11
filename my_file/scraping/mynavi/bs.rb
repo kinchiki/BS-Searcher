@@ -14,8 +14,6 @@ def bs_scrape(doc)
   times = doc.xpath("//td[@class='time']")
 
   (times.size).times do |i|
-    # next if deadline[i].text == "受付終了"
-    # next if deadline[i].text == "－"
     next if dates[i].text == "上記以外の日程を希望"
     next unless times[i].text.size == 10 || times[i].text.size ==11
 
@@ -52,14 +50,6 @@ def get_bs_urls(links)
 end
 
 urls = [
-'https://job.mynavi.jp/17/pc/corp111936/sem.html',
-'https://job.mynavi.jp/17/pc/corp214180/sem.html',
-'https://job.mynavi.jp/17/pc/corp102356/sem.html',
-'https://job.mynavi.jp/17/pc/corp113313/sem.html',
-'https://job.mynavi.jp/17/pc/corp102816/sem.html',
-'https://job.mynavi.jp/17/pc/corp83820/sem.html',
-'https://job.mynavi.jp/17/pc/corp52644/sem.html',
-'https://job.mynavi.jp/17/pc/corp202711/sem.html',
 ]
 
 urls.each do |url|

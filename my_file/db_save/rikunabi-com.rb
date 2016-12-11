@@ -5,6 +5,7 @@ def cp_scrape(doc)
 
   company.com_name = doc.xpath("//h1[@class='company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
   company.head_office = doc.xpath("//td[@class='company-information-detail']")[1].text
+  return if Company.exists?(com_name: company.com_name)
 
   industry = doc.xpath("//td[@class='company-information-detail']")[0].children
   company.sub_str = industry[1].text
