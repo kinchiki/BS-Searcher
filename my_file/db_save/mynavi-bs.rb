@@ -2,7 +2,7 @@ require 'open-uri'
 
 DOMAIN = "https://job.mynavi.jp"
 
-def bs_scrape(doc, com)
+def bs_scrape(doc, com, url)
   sleep 1
   bss = []
 
@@ -14,7 +14,10 @@ def bs_scrape(doc, com)
     next if dates[i].text == "上記以外の日程を希望"
     next unless times[i].text.size == 10 || times[i].text.size ==11
 
-    bs = com.briefing_sessions.build
+    p url
+    bs = url.build_briefing_session
+    bs.company = com
+    # bs = com.briefing_sessions.build
 
     loc = locations[i].text
     if loc == "東京"
@@ -34,7 +37,7 @@ def bs_scrape(doc, com)
     check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
     if check.blank?
       # p bs
-      bs.save
+      # bs.save
       bss << bs
     else
       # p check
@@ -42,6 +45,7 @@ def bs_scrape(doc, com)
     end
   end
 
+  p bs
   puts
   bss
 end
@@ -81,10 +85,20 @@ def save_data(bss, url)
   puts
 end
 
+def check_url(bs_url)
+  if Url.exists?(url_val: bs_url)
+    url = Url.where(url_val: bs_url)
+  else
+    url = Url.new(url_val: bs_url, site_id: 2)
+  end
+end
 
 
 urls = [
-'https://job.mynavi.jp/17/pc/corp72425/sem.html',]
+'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=83820',
+'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=74882',
+'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=102438',
+]
 
 urls.each do |base_url|
   doc = Nokogiri::HTML.parse(open(base_url))
@@ -92,13 +106,15 @@ urls.each do |base_url|
 
   if seminar_links.empty?
     com = get_company(doc.xpath("//div[@class='inner']/h3").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
-    bss = bs_scrape(doc, com) if com
-    save_data(bss, base_url) unless bss.blank?
+    url_obj = check_url(base_url)
+    bss = bs_scrape(doc, com, url_obj) if com
+    # save_data(bss, base_url) unless bss.blank?
   else
     com = get_company(doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
     get_bs_urls(seminar_links).each { |bs_url|
-      bss = bs_scrape(Nokogiri::HTML.parse(open(bs_url)), com) if com
-      save_data(bss, bs_url) unless bss.blank?
+      url_obj = check_url(bs_url)
+      bss = bs_scrape(Nokogiri::HTML.parse(open(bs_url)), com, url_obj) if com
+      # save_data(bss, bs_url) unless bss.blank?
     }
   end
 end

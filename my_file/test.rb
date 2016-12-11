@@ -1,79 +1,114 @@
-def bfs_scrape(doc, bsu, c_id, url)
-  times = doc.xpath("//th[@class='gh_evt_col02_02']")
-  locations = doc.xpath("//th[@class='gh_evt_col03 g_txt_C']")
-  deadline = doc.xpath("//th[@class='gh_evt_col05 g_txt_C']")
+require 'open-uri'
+
+DOMAIN = "https://job.mynavi.jp"
+
+def bs_scrape(doc, com_id, bs_url)
+  sleep 1
+  bss = []
+
+  locations = doc.xpath("//td[@class='area']")
+  dates = doc.xpath("//td[@class='date']")
+  times = doc.xpath("//td[@class='time']")
 
   (times.size).times do |i|
-    # エラーが発生する説明会があったら正規表現でやればいい
-    # または例外処理
-    next if deadline[i].text == "受付終了"
-    next if deadline[i].text == "－"
-    next unless times[i].text.size == 25
+    next if dates[i].text == "上記以外の日程を希望"
+    next unless times[i].text.size == 10 || times[i].text.size ==11
 
-    bs = BriefingSession.new
-    bs.company_id = c_id
-    bs.location = locations[i].text
-    bs.bs_date = times[i].text[0..9]
+    bs = bs_url.briefing_sessions.build
+    bs.company_id = com_id
 
-    time = times[i].text[14..-1].tr('：',':')
-    bs.start_time  = time[0..4]
-    bs.finish_time = time[-5..-1]
+    loc = locations[i].text
+    if loc == "東京"
+      bs.location = "東京都"
+    elsif loc == "大阪" || loc == "京都"
+      bs.location = loc + "府"
+    elsif loc == "北海道"
+        bs.location = loc
+    else
+      bs.location = loc + "県"
+    end
 
-    bsu[url] << bs
+    bs.bs_date = dates[i].text[0..9]
+    bs.start_time  = times[i].text[0..4].delete("～")
+    bs.finish_time = times[i].text[-5..-1].delete("～")
+
+    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
+    if check.blank?
+      # p bs
+      bs.save
+      bss << bs
+    else
+      # p check
+      bss << check
+    end
   end
+
+  puts
+  bss
 end
 
-def get_company_id(doc)
-  c_name = doc.xpath("//div[@class='dev-company-title-main']").text.gsub(/(\s|　|株式会社)+/,'')
-  search_name = Company.find_by(com_name: c_name)
-  unless search_name.nil?
-    search_name.id
+def get_bs_urls(links)
+  bs_urls = []
+  links.each do |bs|
+    bs_urls << DOMAIN + bs[:href]
+  end
+  bs_urls
+end
+
+def get_company_id(c_name)
+  com = Company.find_by(com_name: c_name)
+  unless com.nil?
+    com.id
   else
     false
   end
 end
 
-urls = [
-'https://job.rikunabi.com/2017/company/seminars/r895110029/',
-'https://job.rikunabi.com/2017/company/seminars/r773800014/',
-'https://job.rikunabi.com/2017/company/seminars/r100500050/',
-]
-opts = {
-  depth_limit: 1,
-  skip_query_strings: false,
-  obey_robots_txt: true,
-  read_timeout: 5
-}
-
-bsu = Hash.new { |h, k| h[k] = [] }
-pat = %r(https://job.rikunabi.com/2017/company/seminar/r\d{9}/C0[01][1-9]/)
-
-Anemone.crawl(urls, opts) do |anemone|
-  i = 1
-  anemone.focus_crawl do |page|
-    page.links.keep_if { |link| link.to_s.match(pat) }
+def check_url(u)
+  if Url.exists?(url_val: bs_url)
+    url = Url.where(url_val: bs_url)
+  else
+    url = Url.new(url_val: bs_url, site_id: 2)
   end
-
-  anemone.on_every_page do |page|
-    doc = page.doc
-    company_id = get_company_id(doc)
-    if company_id
-      url = page.url.to_s
-      if url =~ pat
-        bfs_scrape(doc, bsu, company_id, url) unless Url.exists?(url_val: url)
-      p i = i+1
-      end
-    end
-    # sleep 1
-  end
-
 end
 
-bsu.each do |url,bs_all|
-  u = Url.new(url_val: url, site_id: 1)
-  if u.save
-    bs_all.each do |bs|
-     p BriefingSessionUrl.create(briefing_session_id: bs.id, url_id: u.id) if bs.save
+def save_data(bss, url)
+  p url
+  if u.blank?
+    u = Url.new(url_val: url, site_id: 2)
+    if u.save
+      bss.each do |bs|
+        p u.briefing_session_urls.create(briefing_session_id: bs.id) if bs.present?
+      end
     end
+  # else
+  #   bss.each do |bs|
+  #     p BriefingSessionUrl.create(briefing_session_id: bs.id, url_id: u.id) if bs.id.present? && u.id.present?
+  #   end
+  end
+  puts
+end
+
+
+
+urls = [
+'https://job.mynavi.jp/17/pc/corp72425/sem.html',]
+
+urls.each do |base_url|
+  doc = Nokogiri::HTML.parse(open(base_url))
+  seminar_links = doc.xpath("//h3[@class='hdg01']/a")
+
+  if seminar_links.empty?
+    com_id = get_company_id(doc.xpath("//div[@class='inner']/h3").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
+    url = check_url(base_url)
+    bss = bs_scrape(doc, com_id, url) if com_id
+    save_data(bss, url) unless bss.blank?
+  else
+    com_id = get_company_id(doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
+    get_bs_urls(seminar_links).each { |bs_url|
+      url = check_url(bs_url)
+      bss = bs_scrape(Nokogiri::HTML.parse(open(bs_url)), com_id, url) if com_id
+      save_data(bss, url) unless bss.blank?
+    }
   end
 end
