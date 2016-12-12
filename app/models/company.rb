@@ -20,4 +20,8 @@ class Company < ActiveRecord::Base
   scope  :include_sub, -> type {
     where('sub_str like ?', "%#{type}%") if type.present?
   }
+
+  scope  :search_head, -> place {
+    where(head_office: place) if place.present?
+  }
 end

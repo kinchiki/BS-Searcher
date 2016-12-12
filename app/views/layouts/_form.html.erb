@@ -6,10 +6,12 @@
 
   <h2>企業</h2>
   <p><%= f.label(:sf_from_emp_num, "従業員数") %>
-  <%= f.select(:sf_from_emp_num, [1,50,100,300,500,1000,3000,5000], include_blank: true) %> 〜
+  <%= f.select(:sf_from_emp_num, [1,50,100,300,500,1000,3000,5000] ) %> 〜
   <%= f.select(:sf_to_emp_num,   [1,50,100,300,500,1000,3000,5000], include_blank: true) %></p>
   <p><%= f.label(:sf_sub, "業種") %>
   <%= f.text_field(:sf_sub) %></p>
+  <p><%= f.label(:sf_ho, "本社") %>
+  <%= f.select(:sf_ho, grouped_options_for_select(REGION), include_blank: true) %></p>
 
   <h2>説明会</h2>
   <p><%= f.label(:sf_location, "開催地") %><br>
