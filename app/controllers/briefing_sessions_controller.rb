@@ -21,7 +21,7 @@ class BriefingSessionsController < ApplicationController
   end
 
   def show
-    @bs = BriefingSession.includes(:urls).find(params[:id])
+    @bs = BriefingSession.includes(urls: :site).find(params[:id])
   end
 
   private

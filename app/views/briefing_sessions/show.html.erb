@@ -29,11 +29,11 @@
 </p>
 
 <p>
-  <strong>リンク</strong>
+  <strong>予約</strong>
   <div class="table-responsive"><table>
 
     <% @bs.urls.each do |url| %><tr>
-      <td><%= link_to url.url_val, url.url_val, target: "_blank" %></td>
+      <td><%= link_to url.site.site_name, url.url_val, target: "_blank" %></td>
     </tr><% end %>
   </table></div>
 </p>
