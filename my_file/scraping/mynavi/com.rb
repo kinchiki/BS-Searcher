@@ -7,7 +7,7 @@ require_relative '../../class/BriefingSession.rb'
 def cp_scrape(doc)
   company = Company.new
 
-  company.name = doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+)+/, '')
+  company.name = doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, '')
   head = doc.xpath("//div[@class='place']/dl/dd")
   company.head_office = head[0].text.sub(/(\r|\n|\t)+/, '')
   company.sub_str = doc.xpath("//div[@class='category']/ul/li/a").text

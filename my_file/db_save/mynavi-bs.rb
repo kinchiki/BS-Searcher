@@ -34,7 +34,7 @@ def bs_scrape(doc, com, url)
     bs.start_time  = times[i].text[0..4].delete("～")
     bs.finish_time = times[i].text[-5..-1].delete("～")
 
-    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
+    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)[0]
     if check.blank?
       # p bs
       # bs.save
@@ -69,7 +69,7 @@ end
 
 def save_data(bss, url)
   p url
-  u = Url.where(url_val: url)
+  u = Url.where(url_val: url)[0]
   if u.blank?
     u = Url.new(url_val: url, site_id: 2)
     if u.save
@@ -95,9 +95,6 @@ end
 
 
 urls = [
-'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=83820',
-'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=74882',
-'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=102438',
 ]
 
 urls.each do |base_url|
