@@ -13,6 +13,13 @@
 
   <h2>説明会</h2>
   <p><%= f.label(:sf_location, "開催地") %><br>
+  <% REGION.each do |reg, pres| %>
+    <%= reg %><br>
+    <% pres.each do |pre| %>
+      <%= pre %>
+    <% end %><br>
+  <% end %>
+  <%#= f.collection_check_boxes(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_hidden: false) do |prefecture| %>
   <%= f.collection_check_boxes(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_hidden: false) do |prefecture| %>
     <%= prefecture.label {prefecture.check_box + prefecture.text } %>　
   <% end %></p>
