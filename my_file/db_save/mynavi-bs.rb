@@ -97,7 +97,6 @@ end
 
 
 urls = [
-'https://job.mynavi.jp/17/pc/corpinfo/displaySeminarList/index?corpId=201136',
 ]
 
 urls.each do |base_url|
