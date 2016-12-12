@@ -14,7 +14,7 @@
   <h2>説明会</h2>
   <p><%= f.label(:sf_location, "開催地") %><br>
   <%= f.collection_check_boxes(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_hidden: false) do |prefecture| %>
-    <%= prefecture.label {prefecture.check_box + prefecture.text } %>
+    <%= prefecture.label {prefecture.check_box + prefecture.text } %>　
   <% end %></p>
   <p><%= f.label(:sf_start_date, "開催日") %>
   <%= f.date_field(:sf_start_date) %> 〜
