@@ -14,15 +14,13 @@
   <h2>説明会</h2>
   <p><%= f.label(:sf_location, "開催地") %><br>
   <% REGION.each do |reg, pres| %>
-    <%= reg %><br>
+    <strong><%= reg %></strong><br>
     <% pres.each do |pre| %>
-      <%= pre %>
+      <%= f.check_box(:sf_location, {multiple: true, include_hidden: false}, pre) %>
+      <%= pre %>&nbsp;&nbsp;
     <% end %><br>
-  <% end %>
-  <%#= f.collection_check_boxes(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_hidden: false) do |prefecture| %>
-  <%= f.collection_check_boxes(:sf_location, JpPrefecture::Prefecture.all, :name, :name, include_hidden: false) do |prefecture| %>
-    <%= prefecture.label {prefecture.check_box + prefecture.text } %>　
-  <% end %></p>
+  <% end %></p><br>
+
   <p><%= f.label(:sf_start_date, "開催日") %>
   <%= f.date_field(:sf_start_date) %> 〜
   <%= f.date_field(:sf_finish_date) %></p>
