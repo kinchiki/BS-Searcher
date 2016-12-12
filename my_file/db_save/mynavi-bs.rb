@@ -2,7 +2,7 @@ require 'open-uri'
 
 DOMAIN = "https://job.mynavi.jp"
 
-def bs_scrape(doc, com_id, bs_url)
+def bs_scrape(doc, com)
   sleep 1
   bss = []
 
@@ -14,8 +14,7 @@ def bs_scrape(doc, com_id, bs_url)
     next if dates[i].text == "上記以外の日程を希望"
     next unless times[i].text.size == 10 || times[i].text.size ==11
 
-    bs = bs_url.briefing_sessions.build
-    bs.company_id = com_id
+    bs = com.briefing_sessions.build
 
     loc = locations[i].text
     if loc == "東京"
@@ -35,17 +34,17 @@ def bs_scrape(doc, com_id, bs_url)
     check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
     if check.blank?
       # p bs
-      bs.save
       bss << bs
     else
       # p check
-      bss << check
+      bss << check[0]
     end
   end
 
   puts
   bss
 end
+
 
 def get_bs_urls(links)
   bs_urls = []
@@ -55,60 +54,64 @@ def get_bs_urls(links)
   bs_urls
 end
 
-def get_company_id(c_name)
+def get_company(c_name)
   com = Company.find_by(com_name: c_name)
   unless com.nil?
-    com.id
+    com
   else
     false
   end
 end
 
-def check_url(u)
+def save_url(bs_url)
   if Url.exists?(url_val: bs_url)
-    url = Url.where(url_val: bs_url)
+    Url.where(url_val: bs_url)[0]
   else
-    url = Url.new(url_val: bs_url, site_id: 2)
+    # createだと失敗してもオブジェクトが返るため真偽判定できない
+    u = Url.new(url_val: bs_url, site_id: 2)
+    if u.save
+      u
+    else
+      false
+    end
+  end
+end
+
+def check_bs(bs)
+  if bs.persisted?
+    true
+  else
+    bs.save
   end
 end
 
 def save_data(bss, url)
-  p url
-  if u.blank?
-    u = Url.new(url_val: url, site_id: 2)
-    if u.save
-      bss.each do |bs|
-        p u.briefing_session_urls.create(briefing_session_id: bs.id) if bs.present?
+  if u = save_url(url)
+    bss.each do |bs|
+      if check_bs(bs)
+        p bs.briefing_session_urls.create(url_id: u.id) unless BriefingSessionUrl.exists?(briefing_session_id: bs.id, url_id: u.id)
       end
     end
-  # else
-  #   bss.each do |bs|
-  #     p BriefingSessionUrl.create(briefing_session_id: bs.id, url_id: u.id) if bs.id.present? && u.id.present?
-  #   end
   end
-  puts
 end
 
 
-
 urls = [
-'https://job.mynavi.jp/17/pc/corp72425/sem.html',]
+]
 
 urls.each do |base_url|
   doc = Nokogiri::HTML.parse(open(base_url))
   seminar_links = doc.xpath("//h3[@class='hdg01']/a")
 
   if seminar_links.empty?
-    com_id = get_company_id(doc.xpath("//div[@class='inner']/h3").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
-    url = check_url(base_url)
-    bss = bs_scrape(doc, com_id, url) if com_id
-    save_data(bss, url) unless bss.blank?
+    com = get_company(doc.xpath("//div[@class='inner']/h3").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
+    bss = bs_scrape(doc, com) if com
+    save_data(bss, base_url) unless bss.blank?
   else
-    com_id = get_company_id(doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
+    com = get_company(doc.xpath("//div[@class='heading2']/h2").text.gsub(/(\s|　|(\(株\))|\［.+］|【.+】|／.+|\[.+\]|\(.+\)|（.+）)+/, ''))
     get_bs_urls(seminar_links).each { |bs_url|
-      url = check_url(bs_url)
-      bss = bs_scrape(Nokogiri::HTML.parse(open(bs_url)), com_id, url) if com_id
-      save_data(bss, url) unless bss.blank?
+      bss = bs_scrape(Nokogiri::HTML.parse(open(bs_url)), com) if com
+      save_data(bss, bs_url) unless bss.blank?
     }
   end
 end
