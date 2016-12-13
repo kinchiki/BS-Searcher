@@ -1,0 +1,17 @@
+defaults: &defaults
+  DATABASE: gra_re_development
+  DB_USERNAME: railsgr
+  DB_PASSWORD: hayaku1215
+  DB_HOST: localhost
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+  DATABASE: gra_re_test
+
+production:
+  <<: *defaults
+  # DB_USERNAME: railsgr
+  # DB_PASSWORD: hayaku1215
