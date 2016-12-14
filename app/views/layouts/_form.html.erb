@@ -1,17 +1,32 @@
 <%= form_for(@search_form, url: :search_briefing_sessions, html: {method: :get}) do |f| %>
+
   <h2>サイト</h2>
   <p><%= f.collection_check_boxes(:sf_site, Site::Site.all, :id, :site_name, include_hidden: false ) do |site| %>
     <%= site.label {site.check_box + site.text } %>　
   <% end %></p>
 
+
   <h2>企業</h2>
   <p><%= f.label(:sf_from_emp_num, "従業員数") %>
   <%= f.select(:sf_from_emp_num, [1,50,100,300,500,1000,3000,5000] ) %> 〜
   <%= f.select(:sf_to_emp_num,   [1,50,100,300,500,1000,3000,5000], include_blank: true) %></p>
+
   <p><%= f.label(:sf_sub, "業種") %>
-  <%= f.text_field(:sf_sub) %></p>
+  <%= f.select(:sf_sub, grouped_options_for_select(INDUSTRY), include_blank: true) %></p>
+  <% INDUSTRY.each do |large, middle| %>
+    <strong><%= large %></strong><br>
+    <% middle.each do |mid, small| %>
+      <strong><%= mid %></strong><br>
+      <% small.each do |industry| %>
+        <%= f.check_box(:sf_sub, {multiple: true, include_hidden: false}, industry) %>
+        <%= industry %>&nbsp;&nbsp;
+      <% end %><br>
+    <% end %><br>
+  <% end %><br>
+
   <p><%= f.label(:sf_ho, "本社") %>
   <%= f.select(:sf_ho, grouped_options_for_select(REGION), include_blank: true) %></p>
+
 
   <h2>説明会</h2>
   <p><%= f.label(:sf_location, "開催地") %><br>
@@ -26,6 +41,7 @@
   <p><%= f.label(:sf_start_date, "開催日") %>
   <%= f.date_field(:sf_start_date) %> 〜
   <%= f.date_field(:sf_finish_date) %></p>
+
   <p><%= f.label(:sf_start_time, "開催時間") %>
   <%#= binding.pry %>
   <%= f.time_select(:sf_start_time,  include_blank: true, ignore_date: true, minute_step: 15) %> 〜
