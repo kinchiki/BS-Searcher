@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122133034) do
+ActiveRecord::Schema.define(version: 20161214205543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 20161122133034) do
     t.datetime "updated_at",             null: false
   end
 
+  add_index "briefing_sessions", ["company_id"], name: "index_briefing_sessions_on_company_id", using: :btree
+
   create_table "companies", force: :cascade do |t|
     t.string   "com_name",         limit: 100, null: false
     t.string   "head_office",      limit: 30,  null: false
@@ -49,23 +51,19 @@ ActiveRecord::Schema.define(version: 20161122133034) do
   add_index "companies", ["sub_industry_id"], name: "index_companies_on_sub_industry_id", using: :btree
 
   create_table "main_industries", force: :cascade do |t|
-    t.string   "main_t",     limit: 20, null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.string "main_t", limit: 20, null: false
   end
 
   create_table "sites", force: :cascade do |t|
-    t.string   "site_name",  limit: 30, null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.string "site_name", limit: 30, null: false
   end
 
   create_table "sub_industries", force: :cascade do |t|
-    t.integer  "main_industry_id"
-    t.string   "sub_t",            limit: 100, null: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.integer "main_industry_id"
+    t.string  "sub_t",            limit: 100, null: false
   end
+
+  add_index "sub_industries", ["main_industry_id"], name: "index_sub_industries_on_main_industry_id", using: :btree
 
   create_table "urls", force: :cascade do |t|
     t.string   "url_val",    limit: 500, null: false
