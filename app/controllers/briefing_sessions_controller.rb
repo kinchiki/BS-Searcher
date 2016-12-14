@@ -7,19 +7,25 @@ class BriefingSessionsController < ApplicationController
   def search
     @search_form = BriefingSessionSearchForm.new(search_params)
     @bs_results = @search_form.matches
-    # binding.pry
-    @search_form = BriefingSessionSearchForm.new if @search_form.sf_start_time.present? || @search_form.sf_finish_time.present?
-    #   @search_form.sf_start_time  = ""
-    #   @search_form.sf_finish_time = ""
+
+    # 時間が文字列だとフォーム作成時にエラーになる
+    if @search_form.sf_start_time.present? && @search_form.sf_finish_time.present?
+      @search_form.sf_start_time  = @search_form.sf_start_time.to_i
+      @search_form.sf_finish_time = @search_form.sf_finish_time.to_i
+    elsif @search_form.sf_start_time.present?
+      @search_form.sf_start_time  = @search_form.sf_start_time.to_i
+    elsif @search_form.sf_finish_time.present?
+      @search_form.sf_finish_time = @search_form.sf_finish_time.to_i
+    end
     # binding.pry
   end
 
   def show
-    @bs = BriefingSession.includes(:urls).find(params[:id])
+    @bs = BriefingSession.includes(urls: :site).find(params[:id])
   end
 
   private
   def search_params
-    params.require(:briefing_session_search_form).permit(BriefingSessionSearchForm::REGISTRABLE_ATTRIBUTES, sf_location: [] ,sf_site: [])
+    params.require(:briefing_session_search_form).permit(BriefingSessionSearchForm::REGISTRABLE_ATTRIBUTES, sf_location: [], sf_sub: [], sf_site: [])
   end
 end

@@ -5,5 +5,4 @@ class Site < ActiveRecord::Base
   scope :site_select, -> sites {
     where(id: sites) if sites.present?
   }
-
 end
