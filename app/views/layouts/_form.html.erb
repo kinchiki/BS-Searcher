@@ -13,16 +13,6 @@
 
   <p><%= f.label(:sf_sub, "業種") %>
   <%= f.select(:sf_sub, grouped_options_for_select(INDUSTRY), include_blank: true) %></p>
-  <% INDUSTRY.each do |large, middle| %>
-    <strong><%= large %></strong><br>
-    <% middle.each do |mid, small| %>
-      <strong><%= mid %></strong><br>
-      <% small.each do |industry| %>
-        <%= f.check_box(:sf_sub, {multiple: true, include_hidden: false}, industry) %>
-        <%= industry %>&nbsp;&nbsp;
-      <% end %><br>
-    <% end %><br>
-  <% end %><br>
 
   <p><%= f.label(:sf_ho, "本社") %>
   <%= f.select(:sf_ho, grouped_options_for_select(REGION), include_blank: true) %></p>
