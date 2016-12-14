@@ -20,13 +20,13 @@ def bfs_scrape(doc, bsu, c_id, url)
     bs.finish_time = time[-5..-1]
 
     # 無かったら空配列が返る
-    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
+    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time).first
     if check.blank?
       p bs
       bsu[url] << bs
     else
-      # p check[0]
-      bsu[url] << check[0]
+      # p check
+      bsu[url] << check
     end
   end
   puts
@@ -87,7 +87,7 @@ end
 
 bsu.each do |url,bs_all|
   if Url.exists?(url_val: url)
-    u = Url.where(url_val: url)[0]
+    u = Url.find_by(url_val: url)
   else
    p u = Url.new(url_val: url, site_id: 1)
   end

@@ -31,13 +31,13 @@ def bs_scrape(doc, com)
     bs.start_time  = times[i].text[0..4].delete("～")
     bs.finish_time = times[i].text[-5..-1].delete("～")
 
-    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time)
+    check = BriefingSession.equal(bs.company_id, bs.location, bs.bs_date, bs.start_time, bs.finish_time).first
     if check.blank?
       # p bs
       bss << bs
     else
       # p check
-      bss << check[0]
+      bss << check
     end
   end
 
@@ -65,7 +65,7 @@ end
 
 def save_url(bs_url)
   if Url.exists?(url_val: bs_url)
-    Url.where(url_val: bs_url)[0]
+    Url.find_by(url_val: bs_url)
   else
     # createだと失敗してもオブジェクトが返るため真偽判定できない
     u = Url.new(url_val: bs_url, site_id: 2)
