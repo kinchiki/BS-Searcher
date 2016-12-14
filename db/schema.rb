@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161214205543) do
+ActiveRecord::Schema.define(version: 20161214210604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,9 @@ ActiveRecord::Schema.define(version: 20161214205543) do
     t.datetime "updated_at",             null: false
   end
 
+  add_index "briefing_sessions", ["bs_date"], name: "index_briefing_sessions_on_bs_date", using: :btree
   add_index "briefing_sessions", ["company_id"], name: "index_briefing_sessions_on_company_id", using: :btree
+  add_index "briefing_sessions", ["location"], name: "index_briefing_sessions_on_location", using: :btree
 
   create_table "companies", force: :cascade do |t|
     t.string   "com_name",         limit: 100, null: false
@@ -48,6 +50,7 @@ ActiveRecord::Schema.define(version: 20161214205543) do
     t.string   "sub_str",          limit: 100
   end
 
+  add_index "companies", ["employees_number"], name: "index_companies_on_employees_number", using: :btree
   add_index "companies", ["sub_industry_id"], name: "index_companies_on_sub_industry_id", using: :btree
 
   create_table "main_industries", force: :cascade do |t|
