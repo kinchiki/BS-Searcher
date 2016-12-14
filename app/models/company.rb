@@ -16,21 +16,9 @@ class Company < ActiveRecord::Base
       where('employees_number <= ?', to)
     end
   }
+
   scope :include_sub, -> types {
-    if types.present?
-      types =  types.delete("\"[],").split
-      query = ""
-      s_like = "sub_str like"
-      if types.size == 1
-        query = "#{s_like} '%#{types[0]}%'"
-      else
-        (types.size-1).times do |i|
-          query += "#{s_like} '%#{types[i]}%' or "
-        end
-        query += "#{s_like} '%#{types.last}%'"
-      end
-      where(query)
-    end
+    where( types.delete("\"[],").split.map {|type| "sub_str like '%#{type}%'"}.join(" or ") ) if types.present?
   }
 
   scope :search_head, -> place {

@@ -22,10 +22,13 @@ class BriefingSessionSearchForm
   def matches
     # results = BriefingSession.includes(:company).references(:company) どっちがいい？
     results = BriefingSession.includes(:company, urls: :site).joins(:company, urls: :site)
+
     # 説明会情報での検索
     results = results.place(sf_location).date_between(sf_start_date, sf_finish_date).time_between(sf_start_time, sf_finish_time)
+
     # 企業情報での検索
     results = results.merge(Company.employees_between(sf_from_emp_num, sf_to_emp_num)).merge(Company.include_sub(sf_sub)).merge(Company.search_head(sf_ho))
+
     # 就職情報サイトでの検索
     results = results.merge(Site.site_select(sf_site))
 
