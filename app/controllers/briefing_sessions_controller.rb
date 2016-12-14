@@ -26,6 +26,6 @@ class BriefingSessionsController < ApplicationController
 
   private
   def search_params
-    params.require(:briefing_session_search_form).permit(BriefingSessionSearchForm::REGISTRABLE_ATTRIBUTES, sf_location: [] ,sf_site: [])
+    params.require(:briefing_session_search_form).permit(BriefingSessionSearchForm::REGISTRABLE_ATTRIBUTES, sf_location: [], sf_sub: [], sf_site: [])
   end
 end
