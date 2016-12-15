@@ -10,15 +10,15 @@ def cp_scrape(doc)
     return
   end
 
-  ho = doc.xpath("//td[@class='company-information-detail']")[1].text
-  if ho == "東京"
+  h_office = doc.xpath("//td[@class='company-information-detail']")[1].text
+  if h_office == "東京"
     company.head_office = "東京都"
-  elsif ho == "大阪" || ho == "京都"
-    company.head_office = ho + "府"
-  elsif ho == "北海道"
-      company.head_office = ho
+  elsif h_office == "大阪" || h_office == "京都"
+    company.head_office = h_office + "府"
+  elsif h_office == "北海道"
+    company.head_office = h_office
   else
-    company.head_office = ho + "県"
+    company.head_office = h_office + "県"
   end
 
   industry = doc.xpath("//td[@class='company-information-detail']")[0].children
